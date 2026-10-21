@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>SocialSpark — AI Social Media Content Studio (Electric Spark Network)</title>
+  <meta name="theme-color" content="#042d39">
+  <meta name="description" content="SocialSpark is a multi-platform social media content studio with built-in privacy review. Offline test mode: no live AI requests.">
+  <link rel="icon" type="image/svg+xml" href="/socialspark-mark.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+  <script type="module" src="/studio.js"></script>
+  <script type="module" src="/studio-ai-bridge.js"></script>
+  <script type="module" src="/studio-owner-live.js"></script>
+  <script type="module" src="/spark-connectors.js"></script>
+  <script type="module" src="/studio-scheduler.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="header">
+      <div class="brand"><img class="brand-icon" src="/socialspark-mark.svg" alt="" width="44" height="44"><span class="brand-wordmark"><span class="brand-social">Social</span><span class="brand-spark">Spark</span></span><span class="brand-sub">AI Social Media Content Studio</span></div>
+      <span class="label">Local-only preview <span aria-hidden="true">·</span> <strong>Use fictional text</strong></span>
+    </header>
+    <section class="studio-intro" aria-labelledby="studio-headline">
+      <div class="spark-hero-copy"><p class="eyebrow">⚡ Create · Tailor · Protect</p><h1 id="studio-headline">Your next great post<br>starts with a <span class="studio-spark-word">spark.</span></h1><p>One idea. Four platform-ready drafts. <strong>Offline examples only — real AI is not enabled.</strong></p></div>
+      <div class="spark-hero-right"><p>Facebook, Instagram, LinkedIn and TikTok drafts — edit, review risks and copy only what you choose.</p><span class="spark-mode">♢ Local preview · No automatic publishing</span></div>
+    </section>
+    <section class="spark-workspace" aria-label="One idea connects to four social media platform drafts">
+      <!-- Four distinct, measured electric routes. Each ends at its own platform card. -->
+      <svg class="spark-connectors" id="spark-connectors" aria-hidden="true" focusable="false" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="spark-route-blur" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"/></filter>
+          <linearGradient id="spark-tiktok" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ffffff"/><stop offset=".40" stop-color="#78ffec"/><stop offset="1" stop-color="#78ffec"/></linearGradient>
+          <linearGradient id="spark-linkedin" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ffffff"/><stop offset=".40" stop-color="#79bfff"/><stop offset="1" stop-color="#79bfff"/></linearGradient>
+          <linearGradient id="spark-instagram" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ffffff"/><stop offset=".40" stop-color="#ffa7d6"/><stop offset="1" stop-color="#ffa7d6"/></linearGradient>
+          <linearGradient id="spark-facebook" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ffffff"/><stop offset=".40" stop-color="#82d9ff"/><stop offset="1" stop-color="#82d9ff"/></linearGradient>
+        </defs>
+        <g class="spark-route spark-route-facebook" data-spark-route="facebook">
+          <path class="spark-route-blur" data-route-blur="facebook"/>
+          <path class="spark-route-wire" data-route-wire="facebook"/>
+          <path class="spark-charge spark-charge-facebook" data-route-charge="facebook"/>
+          <circle class="spark-route-terminal" data-route-terminal="facebook" r="6"/>
+          <path class="spark-route-terminal-bolt" data-route-bolt="facebook" d=""/>
+        </g>
+        <g class="spark-route spark-route-instagram" data-spark-route="instagram">
+          <path class="spark-route-blur" data-route-blur="instagram"/>
+          <path class="spark-route-wire" data-route-wire="instagram"/>
+          <path class="spark-charge spark-charge-instagram" data-route-charge="instagram"/>
+          <circle class="spark-route-terminal" data-route-terminal="instagram" r="6"/>
+          <path class="spark-route-terminal-bolt" data-route-bolt="instagram" d=""/>
+        </g>
+        <g class="spark-route spark-route-linkedin" data-spark-route="linkedin">
+          <path class="spark-route-blur" data-route-blur="linkedin"/>
+          <path class="spark-route-wire" data-route-wire="linkedin"/>
+          <path class="spark-charge spark-charge-linkedin" data-route-charge="linkedin"/>
+          <circle class="spark-route-terminal" data-route-terminal="linkedin" r="6"/>
+          <path class="spark-route-terminal-bolt" data-route-bolt="linkedin" d=""/>
+        </g>
+        <g class="spark-route spark-route-tiktok" data-spark-route="tiktok">
+          <path class="spark-route-blur" data-route-blur="tiktok"/>
+          <path class="spark-route-wire" data-route-wire="tiktok"/>
+          <path class="spark-charge spark-charge-tiktok" data-route-charge="tiktok"/>
+          <circle class="spark-route-terminal" data-route-terminal="tiktok" r="6"/>
+          <path class="spark-route-terminal-bolt" data-route-bolt="tiktok" d=""/>
+        </g>
+      </svg>
+      <div class="studio-card studio-compose spark-composer">
+        <div class="spark-step"><span class="step-circle">1</span><div><h2>Your post idea <span class="spark-idea-glyph" aria-hidden="true">⚡</span></h2><p>Start with one idea. Tailor it for each platform.</p></div></div>
+        <label for="studio-idea">What do you want to share?</label>
+        <textarea id="studio-idea" rows="5" maxlength="1000" placeholder="Try a fictional topic, announcement, or short draft. Do not use real private information during testing."></textarea>
+        <div class="spark-idea-counter" id="studio-idea-counter">0 / 1,000</div>
+        <label for="studio-tone">Tone</label>
+        <select id="studio-tone" aria-label="Post tone"><option value="friendly">Friendly</option><option value="professional">Professional</option><option value="playful">Playful</option></select>
+        <div class="studio-actions"><button id="studio-create" type="button">⚡ Spark sample drafts →</button><button id="studio-reset" type="button" class="outline">Clear studio</button></div>
+        <p id="studio-status" role="status" aria-live="polite" class="studio-note"></p>
+        <div class="studio-tip"><strong>Preview mode:</strong> These are local example templates, <strong>not AI-generated posts</strong>. No uploads, no publishing. Review each draft.</div>
+        <details class="studio-ai-preflight" id="studio-ai-preflight">
+          <summary>AI preparation <span class="studio-ai-state">No data sent</span></summary>
+          <p>Inspect exactly what a future AI request <em>would</em> include. Masking is limited and may miss private details. Check every word yourself. The consent and Nebius response path have been tested, including one successful owner-run live terminal request. Browser AI generation remains disabled; the optional local rehearsal below does not contact Nebius.</p>
+          <p class="studio-note"><strong>Provider status:</strong> Nebius Support confirmed organization-wide Zero Data Retention and two $25 AI Builder Program grants for hackathon development. Model Nemotron 3 Nano has completed one owner-run live test. Production use and future paid requests require separate approvals and controls. Nothing in this panel authorizes transmission.</p>
+          <button id="studio-inspect-ai" type="button" class="outline">Preview masked AI input</button>
+          <label for="studio-ai-masked">Proposed text for provider review — local preview only</label>
+          <textarea id="studio-ai-masked" rows="3" readonly placeholder="Preview appears here; no text will be sent."></textarea>
+          <p id="studio-ai-preflight-note" class="studio-note" role="status" aria-live="polite">No real Nebius AI requests are possible from this browser.</p>
+          <label class="studio-acknowledgment studio-ai-ack"><input id="studio-ai-reviewed" type="checkbox" disabled> I reviewed the exact proposed text; I understand masking cannot guarantee privacy. This is not consent to send anything.</label>
+          <button id="studio-request-ai" type="button" disabled>Real AI generation disabled — local testing only</button>
+          <details class="studio-bridge" id="studio-bridge">
+            <summary>⚡ Browser AI workflow rehearsal <strong>OFFLINE SIMULATION</strong></summary>
+            <p class="studio-note">Practice the exact browser-to-server consent and four-draft review process with one fixed fictional example. Start the separate <code>studio:rehearsal</code> command to enable this local mock. <strong>No NVIDIA calls, credits, or real user posts.</strong></p>
+            <button type="button" id="bridge-example" class="outline">Use fixed fictional workshop example</button>
+            <button type="button" id="bridge-preview" class="outline">Preview exact masked example</button>
+            <label for="bridge-exact">Text proposed for local mock server only</label>
+            <textarea id="bridge-exact" rows="2" readonly placeholder="Click Preview; nothing is sent yet."></textarea>
+            <label class="studio-acknowledgment"><input type="checkbox" id="bridge-consent" disabled> I reviewed this exact fictional text and choose one offline mock request. This is not approval for a paid Nebius request.</label>
+            <button type="button" id="bridge-request" disabled>Request four offline simulated drafts</button>
+            <p class="studio-note" id="bridge-status" role="status" aria-live="polite">No request made. Real AI is disabled in this version.</p>
+            <div id="bridge-review" hidden>
+              <strong>Review all four mock results before applying</strong>
+              <p class="studio-note">These are fixed local demonstration drafts, NOT new NVIDIA output. They will not replace your platform cards until you explicitly choose to apply them.</p>
+              <div id="bridge-posts"></div>
+              <label class="studio-acknowledgment"><input type="checkbox" id="bridge-apply-check"> I reviewed all four drafts and choose to replace the current platform cards with these mock examples.</label>
+              <button type="button" id="bridge-apply" disabled>Apply four mock drafts to cards</button>
+            </div>
+          </details>
+          <details class="studio-bridge" id="owner-live-panel" hidden>
+            <summary>⚡ Owner-only NVIDIA live browser trial <strong>POTENTIALLY BILLABLE</strong></summary>
+            <p class="studio-note"><strong>Separate owner authorization required:</strong> This developer-only path is enabled only by a separately started, interactive, key-protected server. It accepts one fixed fictional workshop sentence, never arbitrary private posts. One provider attempt may cost money even on failure. Not a provider billing cap or production feature.</p>
+            <button type="button" id="owner-live-example" class="outline">Load fixed fictional workshop idea</button>
+            <button type="button" id="owner-live-preview" class="outline">Preview exact text for NVIDIA</button>
+            <label for="owner-live-exact">Exact text proposed to Nebius — local preview</label>
+            <textarea id="owner-live-exact" rows="2" readonly placeholder="Preview here; nothing sent yet."></textarea>
+            <label class="studio-acknowledgment"><input type="checkbox" id="owner-live-consent" disabled> I reviewed this exact fictional text and authorize ONE potentially billable Nebius request. No retries. This is separate from applying drafts.</label>
+            <button type="button" id="owner-live-request" disabled>Request four real NVIDIA drafts (one attempt)</button>
+            <p class="studio-note" id="owner-live-status" role="status" aria-live="polite">Real AI is locked in the ordinary offline preview. No provider request made.</p>
+            <div id="owner-live-review" hidden>
+              <strong>Review actual NVIDIA results before applying</strong>
+              <p class="studio-note">Local validation cannot ensure factual accuracy or complete privacy. No content is auto-published or auto-applied.</p>
+              <div id="owner-live-posts"></div>
+              <label class="studio-acknowledgment"><input type="checkbox" id="owner-live-apply-check"> I reviewed all four actual NVIDIA drafts and choose to replace the platform cards.</label>
+              <button type="button" id="owner-live-apply" disabled>Apply reviewed NVIDIA drafts to cards</button>
+            </div>
+          </details>
+        </details>
+      </div>
+      <div class="spark-hub" aria-hidden="true">
+        <svg viewBox="0 0 185 535" xmlns="http://www.w3.org/2000/svg" focusable="false">
+          <defs>
+            <linearGradient id="spark-to-hub" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fff0a6"/><stop offset=".48" stop-color="#ffe16c"/><stop offset="1" stop-color="#4effdf"/></linearGradient>
+
+            <radialGradient id="spark-core"><stop stop-color="#0ef5c9"/><stop offset=".55" stop-color="#056e6b"/><stop offset="1" stop-color="#022c48"/></radialGradient>
+            <filter id="hub-aura" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="12"/></filter>
+            <filter id="spark-wire-blur" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>
+          </defs>
+          <g class="spark-aura"><circle cx="85" cy="264" r="84" fill="#19f5cc" opacity=".26" filter="url(#hub-aura)"/><circle cx="85" cy="264" r="72" stroke="#ffd166" stroke-width="4" fill="none" opacity=".3"/></g>
+          <g class="spark-electric-wires" fill="none" stroke-linecap="round">
+            <path class="spark-wire-blur" d="M0 267 Q34 267 49 264" stroke="url(#spark-to-hub)" stroke-width="11" filter="url(#spark-wire-blur)"/>
+            <path d="M0 267 Q34 267 49 264" stroke="url(#spark-to-hub)" stroke-width="4"/>
+            <path class="spark-charge spark-charge-in" d="M0 267 Q34 267 49 264" stroke="#fff9cd" stroke-width="4"/>
+          </g>
+          <g class="spark-flashes" fill="#ffdf72"><path d="M30 150 l10 -21 3 16 9 -1 -15 26 2 -18z"/><path d="M163 156 l8 -18 2 12 7 -1 -12 23 1 -16z"/><path d="M17 359 l7 -19 4 12 6 -1 -13 19 2 -13z"/><path d="M139 404 l7 -18 3 12 6 -1 -11 21 1 -14z"/><circle cx="48" cy="94" r="2.5"/><circle cx="170" cy="330" r="3"/><circle cx="14" cy="230" r="3"/><circle cx="179" cy="503" r="2"/></g>
+          <circle cx="85" cy="264" r="64" fill="#113f55" opacity=".9" stroke="#91ffe0" stroke-width="3"/>
+          <circle class="spark-center" cx="85" cy="264" r="56" fill="url(#spark-core)" stroke="#ffe169" stroke-width="4"/>
+          <g class="spark-chat-glyph" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M59 241 q0 -9 10 -9 h33 q9 0 9 9 v27 q0 10 -10 10 h-14 l-15 16 v-16 h-3 q-10 0 -10 -10z"/></g>
+          <path d="M90 237 l-14 23 h12 l-7 24 23 -30 h-13 l7 -17z" fill="#ffdf68"/>
+        </svg>
+        <p>One idea.<br><strong>Four sparks.</strong></p>
+      </div>
+      <div class="spark-destinations" id="studio-platforms" aria-label="Four platform-ready drafts">
+        <article class="spark-platform" data-platform="facebook" aria-labelledby="spark-facebook-title">
+          <div class="spark-platform-heading"><span class="platform-icon icon-facebook" aria-hidden="true">f</span><div><h2 id="spark-facebook-title" tabindex="-1">Facebook draft</h2><span class="platform-hint">Conversational · Invite replies</span></div><span class="platform-tag">Facebook</span></div>
+          <textarea id="studio-preview-facebook" class="spark-post" aria-label="Facebook editable draft" rows="3" maxlength="6000" disabled readonly placeholder="Your Facebook post will appear here."></textarea>
+          <div class="spark-platform-actions"><button type="button" class="spark-edit outline" data-platform="facebook" disabled>✎ Edit draft</button><span class="spark-risk-badge" id="studio-risk-facebook" role="status" aria-live="polite">Waiting for draft</span><button id="studio-copy-facebook" class="spark-copy" type="button" disabled>Copy post</button></div>
+          <div class="spark-copy-note" id="studio-copy-note-facebook" role="status" aria-live="polite"></div>
+          <details class="spark-risk-details" id="studio-warnings-facebook" hidden><summary>Review Facebook privacy warnings</summary><div id="studio-risk-list-facebook"></div><label class="studio-acknowledgment"><input type="checkbox" id="studio-ack-facebook"> I reviewed these warnings and choose to copy this exact Facebook post anyway.</label></details>
+          <div class="spark-copy-outcome" id="studio-outcome-facebook" role="status" aria-live="polite"></div><div class="studio-manual-copy" id="studio-manual-copy-facebook" hidden><label for="studio-fallback-facebook">Copy manually (Ctrl+C / Command+C):</label><textarea id="studio-fallback-facebook" readonly rows="3"></textarea></div>
+        </article>
+        <article class="spark-platform" data-platform="instagram" aria-labelledby="spark-instagram-title">
+          <div class="spark-platform-heading"><span class="platform-icon icon-instagram" aria-hidden="true">◎</span><div><h2 id="spark-instagram-title">Instagram draft</h2><span class="platform-hint">Short caption · Optional hashtags</span></div><span class="platform-tag">Instagram</span></div>
+          <textarea id="studio-preview-instagram" class="spark-post" aria-label="Instagram editable draft" rows="3" maxlength="6000" disabled readonly placeholder="Your Instagram post will appear here."></textarea>
+          <div class="spark-platform-actions"><button type="button" class="spark-edit outline" data-platform="instagram" disabled>✎ Edit draft</button><span class="spark-risk-badge" id="studio-risk-instagram" role="status" aria-live="polite">Waiting for draft</span><button id="studio-copy-instagram" class="spark-copy" type="button" disabled>Copy post</button></div>
+          <div class="spark-copy-note" id="studio-copy-note-instagram" role="status" aria-live="polite"></div>
+          <details class="spark-risk-details" id="studio-warnings-instagram" hidden><summary>Review Instagram privacy warnings</summary><div id="studio-risk-list-instagram"></div><label class="studio-acknowledgment"><input type="checkbox" id="studio-ack-instagram"> I reviewed these warnings and choose to copy this exact Instagram post anyway.</label></details>
+          <div class="spark-copy-outcome" id="studio-outcome-instagram" role="status" aria-live="polite"></div><div class="studio-manual-copy" id="studio-manual-copy-instagram" hidden><label for="studio-fallback-instagram">Copy manually (Ctrl+C / Command+C):</label><textarea id="studio-fallback-instagram" readonly rows="3"></textarea></div>
+        </article>
+        <article class="spark-platform" data-platform="linkedin" aria-labelledby="spark-linkedin-title">
+          <div class="spark-platform-heading"><span class="platform-icon icon-linkedin" aria-hidden="true">in</span><div><h2 id="spark-linkedin-title">LinkedIn draft</h2><span class="platform-hint">Professional · Discussion-focused</span></div><span class="platform-tag">LinkedIn</span></div>
+          <textarea id="studio-preview-linkedin" class="spark-post" aria-label="LinkedIn editable draft" rows="3" maxlength="6000" disabled readonly placeholder="Your LinkedIn post will appear here."></textarea>
+          <div class="spark-platform-actions"><button type="button" class="spark-edit outline" data-platform="linkedin" disabled>✎ Edit draft</button><span class="spark-risk-badge" id="studio-risk-linkedin" role="status" aria-live="polite">Waiting for draft</span><button id="studio-copy-linkedin" class="spark-copy" type="button" disabled>Copy post</button></div>
+          <div class="spark-copy-note" id="studio-copy-note-linkedin" role="status" aria-live="polite"></div>
+          <details class="spark-risk-details" id="studio-warnings-linkedin" hidden><summary>Review LinkedIn privacy warnings</summary><div id="studio-risk-list-linkedin"></div><label class="studio-acknowledgment"><input type="checkbox" id="studio-ack-linkedin"> I reviewed these warnings and choose to copy this exact LinkedIn post anyway.</label></details>
+          <div class="spark-copy-outcome" id="studio-outcome-linkedin" role="status" aria-live="polite"></div><div class="studio-manual-copy" id="studio-manual-copy-linkedin" hidden><label for="studio-fallback-linkedin">Copy manually (Ctrl+C / Command+C):</label><textarea id="studio-fallback-linkedin" readonly rows="3"></textarea></div>
+        </article>
+        <article class="spark-platform" data-platform="tiktok" aria-labelledby="spark-tiktok-title">
+          <div class="spark-platform-heading"><span class="platform-icon icon-tiktok" aria-hidden="true">♪</span><div><h2 id="spark-tiktok-title">TikTok draft</h2><span class="platform-hint">Short video caption · Hook & hashtags</span></div><span class="platform-tag">TikTok</span></div>
+          <textarea id="studio-preview-tiktok" class="spark-post" aria-label="TikTok editable draft" rows="3" maxlength="6000" disabled readonly placeholder="Your TikTok post will appear here."></textarea>
+          <div class="spark-platform-actions"><button type="button" class="spark-edit outline" data-platform="tiktok" disabled>✎ Edit draft</button><span class="spark-risk-badge" id="studio-risk-tiktok" role="status" aria-live="polite">Waiting for draft</span><button id="studio-copy-tiktok" class="spark-copy" type="button" disabled>Copy post</button></div>
+          <div class="spark-copy-note" id="studio-copy-note-tiktok" role="status" aria-live="polite"></div>
+          <details class="spark-risk-details" id="studio-warnings-tiktok" hidden><summary>Review TikTok privacy warnings</summary><div id="studio-risk-list-tiktok"></div><label class="studio-acknowledgment"><input type="checkbox" id="studio-ack-tiktok"> I reviewed these warnings and choose to copy this exact TikTok post anyway.</label></details>
+          <div class="spark-copy-outcome" id="studio-outcome-tiktok" role="status" aria-live="polite"></div><div class="studio-manual-copy" id="studio-manual-copy-tiktok" hidden><label for="studio-fallback-tiktok">Copy manually (Ctrl+C / Command+C):</label><textarea id="studio-fallback-tiktok" readonly rows="3"></textarea></div>
+        </article>
+      </div>
+    </section>
+    <details class="schedule-panel" id="studio-scheduler">
+      <summary>📅 Schedule for Later <small>Manual publishing · Locally saved drafts · Calendar reminders</small></summary>
+      <div class="schedule-body">
+        <p class="schedule-help"><strong>Planning only:</strong> SocialSpark does not publish to social accounts, run when Chrome is closed, or send reminders itself. Save exact drafts locally, then optionally import a calendar reminder (.ics) into your calendar app. No post text is included in reminder files.</p>
+        <div class="schedule-fields">
+          <fieldset class="schedule-platform-select"><legend>Choose platforms (create and review drafts first)</legend>
+            <label><input id="schedule-check-facebook" type="checkbox"> Facebook</label>
+            <label><input id="schedule-check-instagram" type="checkbox"> Instagram</label>
+            <label><input id="schedule-check-linkedin" type="checkbox"> LinkedIn</label>
+            <label><input id="schedule-check-tiktok" type="checkbox"> TikTok</label>
+          </fieldset>
+          <div class="schedule-date"><label for="schedule-when">When would you like a reminder? (your device's local time)</label><input type="datetime-local" id="schedule-when" required><p class="schedule-help">Times use your device's current time zone. Recheck them if traveling or changing time zones.</p></div>
+        </div>
+        <label class="schedule-ack"><input type="checkbox" id="schedule-local-consent"> I choose to save these exact selected drafts on this browser. Browser storage is <strong>not encrypted</strong>; anyone with access to this browser profile may see them. Do not save sensitive information.</label>
+        <button id="schedule-save" type="button">⚡ Save for manual publishing</button>
+        <p id="schedule-message" class="schedule-feedback" role="status" aria-live="polite">Nothing is saved unless you explicitly choose Save.</p>
+        <div class="schedule-calendar-section">
+          <div class="schedule-month-controls"><button id="schedule-prev-month" type="button" class="outline" aria-label="Previous month">←</button><strong id="schedule-month-label"></strong><button id="schedule-next-month" type="button" class="outline" aria-label="Next month">→</button><button id="schedule-show-all" type="button" class="outline">Show all</button></div>
+          <div class="schedule-days" id="schedule-days" aria-label="Calendar of locally saved manual reminders"></div>
+        </div>
+        <div class="schedule-saved-header"><h3>Saved manual publishing reminders</h3><button id="schedule-download-all" type="button" class="outline" disabled>Download all calendar reminders (.ics)</button></div>
+        <p class="schedule-help" id="schedule-count"></p>
+        <div class="schedule-list" id="schedule-list"></div>
+        <p class="schedule-help"><strong>Privacy note:</strong> Drafts are stored only in this browser profile unless you copy/export them. Clearing browser data removes them. Importing .ics reminders into another calendar app may sync the platform/time information to that service, but not your post content. No automatic posting or notifications by SocialSpark.</p>
+      </div>
+    </details>
+    <details class="privacy-lab" id="privacy-lab">
+      <summary><span><strong>⚡ Advanced Privacy Lab</strong> <small>Existing masking, six local checks, fictional suggestion review, confirmation & Undo</small></span><span aria-hidden="true">⌄</span></summary>
+      <div class="lab-body">
+    <section class="hero" aria-labelledby="headline">
+      <div class="hero-copy">
+        <p class="eyebrow">Think before you share <span class="hero-spark" aria-hidden="true">✳</span></p>
+        <h1 id="headline">Your words.<span class="hero-highlight"> Your decision.</span></h1>
+        <p>See what your words could reveal before you share. Our six local checks are <strong>experimental and cannot guarantee a post is safe.</strong> For now, use fictional examples only.</p>
+      </div>
+      <div class="hero-steps" aria-label="How this preview works">
+        <span><b>01</b> Write a draft</span>
+        <span><b>02</b> Review risks</span>
+        <span><b>03</b> Choose what to share</span>
+      </div>
+    </section>
+    <div class="workspace" aria-label="Writing and privacy review workspace">
+    <section class="panel" aria-labelledby="editor-heading">
+      <div class="section-top">
+        <div><p class="eyebrow">01 · Draft</p><h2 id="editor-heading">Write a sample post</h2></div>
+        <span class="status" id="review-status" role="status" aria-live="polite">Ready</span>
+      </div>
+      <label for="draft">Your text</label>
+      <textarea id="draft" rows="7" maxlength="6000" spellcheck="true" placeholder="Use fictional sample text. Do not enter real private information until this app is fully tested."></textarea>
+      <div class="counter" id="counter" aria-live="polite">0 / 6,000 characters</div>
+      <p class="notice"><strong>Development preview:</strong> Local checks are experimental and may miss concerns or flag harmless text. NVIDIA AI is disabled. Your draft stays in this tab's memory and disappears on refresh or close. Use fictional text only.</p>
+      <div class="actions">
+        <button type="button" id="clear" class="outline" aria-haspopup="dialog" aria-controls="confirm-clear" disabled>Clear / Start Over</button>
+        <button type="button" id="copy" aria-describedby="copy-availability" disabled>Copy Post</button>
+      </div>
+      <p id="clear-feedback" class="feedback" role="status" aria-live="polite"></p>
+      <p id="copy-availability" class="copy-availability" role="status" aria-live="polite">Enter a draft before copying.</p>
+      <p id="copy-message" class="feedback" role="status" aria-live="polite"></p>
+      <div id="manual-copy" class="manual-copy" hidden>
+        <label for="copy-fallback">Manual copying: select the exact text below and use Ctrl+C (or Command+C).</label>
+        <textarea id="copy-fallback" readonly rows="3"></textarea>
+      </div>
+    </section>
+    <section class="panel" aria-labelledby="review-heading">
+      <div class="section-top"><div><p class="eyebrow">02 · Privacy review</p><h2 id="review-heading">Six local checks</h2></div><span class="status" id="check-status">Waiting for text</span></div>
+      <ul class="checks" id="checks"></ul>
+      <div id="warning-area" hidden>
+        <h3>Possible concerns and limitations</h3>
+        <div id="findings"></div>
+        <div id="limitations"></div>
+        <div id="hidden-inspector" class="integrity" hidden>
+          <h4>Invisible characters revealed</h4>
+          <p>These markers are for inspection only. They are not part of your original post. Some invisible characters are legitimate; removing them may change meaning or formatting.</p>
+          <p class="hint">Read the descriptions below. The exact locations are listed by character position.</p>
+          <pre id="hidden-revealed" class="revealed" aria-label="Post with invisible characters replaced by visible markers"></pre>
+          <ul id="hidden-list" class="integrity-list"></ul>
+        </div>
+        <button id="remove-hidden" class="outline" type="button" hidden>Remove flagged hidden characters from my post</button>
+        <label class="acknowledgment"><input id="acknowledge" type="checkbox"> I understand the concerns or incomplete coverage shown above, and I choose to copy this version of my post anyway.</label>
+      </div>
+      <p class="hint" id="check-note">Checks run locally while you edit. No data is sent to the server.</p>
+    </section>
+    <section class="panel" aria-labelledby="mask-heading">
+      <div class="section-top"><div><p class="eyebrow">03 · Local masking</p><h2 id="mask-heading">Masked-text preview</h2></div><span class="status warning" id="mask-status" role="status" aria-live="polite">No draft</span></div>
+      <p>This preview shows what sensitive details <em>could</em> look like when replaced by placeholders before optional AI review. It is not sent anywhere. Masking is experimental and may miss information, so inspect it carefully.</p>
+      <div id="mask-preview" hidden>
+        <label for="masked-text">Preview only — not your current post</label>
+        <textarea id="masked-text" readonly rows="5" aria-describedby="mask-info"></textarea>
+        <p id="mask-info" class="hint"></p>
+      </div>
+      <p class="notice"><strong>AI transmission disabled.</strong> This is a local demonstration only. Even if known patterns are masked, nobody has verified that all private information was removed.</p>
+    </section>
+    <section class="panel" aria-labelledby="ai-heading">
+      <div class="section-top"><div><p class="eyebrow">04 · Optional review</p><h2 id="ai-heading">NVIDIA AI</h2></div><span class="status warning">Disabled</span></div>
+      <p>AI review is unavailable. The provider's applicable opt-out settings and terms still need confirmation. Server-side preflight tests are not authorization to send content. The spending cap is $0 in this development build, and no scan endpoint is enabled.</p>
+      <div id="ai-consent-preview" hidden>
+        <label for="ai-exact-text">Exact masked text that a future request would propose sending — local preview only</label>
+        <textarea id="ai-exact-text" rows="4" readonly aria-describedby="ai-consent-note"></textarea>
+        <p class="hint" id="ai-consent-note">Review the entire text. Placeholders cannot guarantee anonymity. No information from this section is transmitted.</p>
+        <label class="acknowledgment" for="ai-demo-check"><input id="ai-demo-check" type="checkbox" disabled> I reviewed the displayed masked text (local demo only; this is NOT consent to an actual AI scan).</label>
+        <p id="ai-demo-status" class="hint" role="status" aria-live="polite"></p>
+      </div>
+      <button id="ai-request" type="button" disabled>AI scan unavailable — provider verification pending</button>
+    </section>
+    <section class="panel" aria-labelledby="suggestion-heading">
+      <div class="section-top">
+        <div><p class="eyebrow">05 · Fictional demo</p><h2 id="suggestion-heading">Review and edit a suggested post</h2></div>
+        <span class="status warning">Offline only</span>
+      </div>
+      <p>This demonstration uses <strong>prewritten fictional findings</strong>, not an AI response to your text. Nothing is sent to NVIDIA or another provider. Enter one of the two exact fictional samples below. Multiple findings are presented together, but <strong>nothing is applied automatically</strong>.</p>
+      <p class="hint">One finding: <code>Call me at 916-555-0198.</code></p>
+      <p class="hint">Two findings: <code>Call me at 916-555-0198 or visit me at 123 Main Street.</code></p>
+      <button type="button" id="load-suggestion" aria-describedby="demo-availability" aria-controls="suggestion-review" aria-expanded="false" disabled>Load fictional suggestion</button>
+      <p id="demo-availability" class="hint" role="status" aria-live="polite">Enter one of the exact fictional examples above to enable this offline demonstration.</p>
+      <div id="suggestion-review" class="suggestion-review" hidden>
+        <h3 id="suggestion-review-title" tabindex="-1">Suggested change — review before applying</h3>
+        <p class="hint">Untrusted suggestion text. Its source quote and explanation are for this fictional demonstration only.</p>
+        <h4 id="demo-findings-heading">Fictional findings to review</h4>
+        <p class="hint">These examples are untrusted. The quoted source appears in the masked preview; that alone does not prove an explanation is correct.</p>
+        <div id="suggestion-findings" role="list" aria-labelledby="demo-findings-heading"></div>
+        <p class="hint">The suggested post below is a <strong>complete alternative draft</strong>, not an automatic combination of individual replacements.</p>
+        <label for="edited-suggestion">Suggested post — edit manually if you wish</label>
+        <textarea id="edited-suggestion" rows="4" maxlength="6000" spellcheck="true"></textarea>
+        <p id="suggestion-check" class="feedback" role="status" aria-live="polite"></p>
+        <div class="actions review-actions">
+          <button type="button" id="discard-suggestion" class="outline">Discard suggestion</button>
+          <button type="button" id="apply-suggestion" disabled>Review and apply</button>
+        </div>
+      </div>
+      <div id="apply-confirmation" class="apply-confirmation" hidden role="group" aria-labelledby="apply-confirmation-title" aria-describedby="apply-confirmation-description">
+        <h3 id="apply-confirmation-title" tabindex="-1">Confirm before replacing your draft</h3>
+        <p id="apply-confirmation-description">Nothing has been changed yet. Compare the versions below. The replacement will rerun privacy checks and reset acknowledgments, and you can undo it until your next edit or refresh.</p>
+        <p><strong>Current post (will be replaced):</strong></p>
+        <div class="comparison-text" id="apply-original-text"></div>
+        <p><strong>Proposed post:</strong></p>
+        <div class="comparison-text" id="apply-proposed-text"></div>
+        <label class="acknowledgment" for="apply-acknowledgment"><input id="apply-acknowledgment" type="checkbox"> I have reviewed both versions and I explicitly choose to replace my current post.</label>
+        <div class="actions review-actions">
+          <button type="button" id="cancel-apply" class="outline">Keep my original post</button>
+          <button type="button" id="confirm-apply-button" disabled>Yes, replace my post</button>
+        </div>
+      </div>
+      <div id="undo-area" class="undo-area" hidden>
+        <p id="undo-message" role="status" aria-live="polite">Suggestion applied. Local privacy checks reran. Your previous post is available to restore until you edit this one or refresh.</p>
+        <button type="button" id="undo-suggestion" class="outline">Undo — restore previous post</button>
+      </div>
+      <p id="suggestion-message" class="hint" role="status" aria-live="polite"></p>
+    </section>
+    </div>
+      </div>
+    </details>
+    <footer>Local offline draft examples · No accounts · No AI calls · No tracking · No automatic publishing</footer>
+  </main>
+  <dialog id="studio-clear-dialog" aria-labelledby="studio-clear-title">
+    <h2 id="studio-clear-title">Clear all four drafts?</h2>
+    <p>Your idea and locally generated platform drafts will be cleared. This can't erase text already copied to your clipboard.</p>
+    <div class="actions"><button id="studio-keep" type="button" class="outline">Keep my drafts</button><button id="studio-clear" type="button">Yes, clear drafts</button></div>
+  </dialog>
+  <dialog id="confirm-clear" aria-labelledby="clear-title" aria-describedby="clear-description">
+    <h2 id="clear-title">Clear this draft?</h2>
+    <p id="clear-description">Clearing permanently removes this draft, its local privacy results, and any temporary suggestion or Undo option in this tab. This cannot be undone. It will not erase text you previously copied to your device clipboard.</p>
+    <div class="actions"><button type="button" id="cancel-clear" class="outline">Keep draft</button><button type="button" id="confirm-clear-button">Yes, clear my draft</button></div>
+  </dialog>
+</body>
+</html>

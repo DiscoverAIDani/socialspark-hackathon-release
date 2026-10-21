@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" role="img" aria-labelledby="title">
+<title id="title">SocialSpark chat bubbles and electric bolt</title>
+<defs>
+ <linearGradient id="back" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d817e"/><stop offset="1" stop-color="#063d45"/></linearGradient>
+ <linearGradient id="front" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55f8da"/><stop offset=".65" stop-color="#04cbb5"/><stop offset="1" stop-color="#0e958e"/></linearGradient>
+</defs>
+<path d="M27 42c0-16 13-29 29-29h62c17 0 30 13 30 29v58c0 17-13 30-30 30H69l-28 24v-24c-8-1-14-5-18-12-3-5-4-10-4-17V42z" fill="url(#back)" stroke="#086969" stroke-width="3"/>
+<path d="M67 69c0-17 13-30 30-30h48c18 0 31 13 31 31v48c0 17-13 31-31 31h-12l17 24-36-24H97c-17 0-30-14-30-31V69z" fill="url(#front)" stroke="#f5fffc" stroke-width="3"/>
+<path d="M118 57 87 108h28l-12 36 46-61h-29z" fill="#fff"/>
+<path d="m157 20 5-13M174 33l12-5M171 16l8-10" stroke="#ffd166" stroke-width="7" stroke-linecap="round"/>
+</svg>

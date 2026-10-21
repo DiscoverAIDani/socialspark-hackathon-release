@@ -1,0 +1,21 @@
+{
+  "name": "socialspark-content-studio",
+  "version": "0.24.0",
+  "private": true,
+  "type": "module",
+  "description": "Four-platform studio with opt-in local manual scheduling, privacy checks and locked owner-only NVIDIA gateway",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "test": "node --test",
+    "demo:response": "node scripts/demo-ai-response.mjs",
+    "test:response": "node --test test/ai-response-validation.test.js",
+    "test:suggestions": "node --test test/suggestion-workflow.test.js",
+    "demo:nebius-gateway": "node scripts/demo-nebius-gateway.mjs",
+    "studio:rehearsal": "node scripts/start-studio-rehearsal.mjs",
+    "studio:owner-live": "node scripts/start-owner-live.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
