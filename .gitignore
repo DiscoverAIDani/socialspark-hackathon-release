@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+!.env.example
+coverage/
+.DS_Store
+Thumbs.db
+
+.socialspark-one-live-request.lock
+.socialspark-second-live-request.lock
+.socialspark-browser-owner-live-request.lock
