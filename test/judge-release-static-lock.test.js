@@ -56,7 +56,7 @@ test('unbound judge gateway responds 503 and no-store',async()=>{
   const response=disabledJudgeGatewayResponse();
   assert.equal(response.status,503);
   assert.equal(response.headers.get('Cache-Control'),'no-store, max-age=0');
-  assert.match(response.headers.get('Content-Security-Policy'),'connect-src \'none\'');
+  assert.match(response.headers.get('Content-Security-Policy'),/connect-src 'none'/);
   const body=await response.json();
   assert.deepEqual(body,{ok:false,code:'judge-live-ai-disabled'});
 });
