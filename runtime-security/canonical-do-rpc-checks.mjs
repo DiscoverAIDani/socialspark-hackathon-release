@@ -159,6 +159,35 @@ describe('canonical local DO-backed judge preflight — NO AI requests',()=>{
     expect(sessionRoute.status).toBe(404);
   });
 
+  it('shared quota denies overflow under 80 simultaneous reservations without a reset',async()=>{
+    await seedAll(); // direct test-framework initialization; no HTTP reset route
+    const services=makeLocalJudgeBindingServices(env);
+    const result=await Promise.all(Array.from({length:80},()=>
+      services.reserveQuota()));
+    expect(result.filter(x=>x.allowed===true)).toHaveLength(20);
+    expect(result.filter(x=>x.allowed===false)).toHaveLength(60);
+    const quota=stub(env.TEST_QUOTA,LOCAL_JUDGE_CANONICAL_BINDINGS.TEST_QUOTA);
+    await evictDurableObject(quota);
+    expect((await quota.readLifetimeStatusForOwner()).attempts).toBe(20);
+    expect((await quota.readLifetimeStatusForOwner()).reservedCents).toBe(100);
+    expect((await services.reserveQuota()).allowed).toBe(false);
+    expect(services.providerCallsAuthorized).toBe(false);
+  });
+
+  it('global rate coordinator only allows three issuance slots in a burst',async()=>{
+    await seedAll(); // local-only fixtures; never initialize remotely
+    const services=makeLocalJudgeBindingServices(env);
+    const outcomes=await Promise.all(Array.from({length:25},()=>
+      services.reserveRateSlot()));
+    expect(outcomes.filter(x=>x.allowed===true)).toHaveLength(3);
+    expect(outcomes.filter(x=>x.allowed===false)).toHaveLength(22);
+    const rate=stub(env.TEST_RATE,LOCAL_JUDGE_CANONICAL_BINDINGS.TEST_RATE);
+    await evictDurableObject(rate);
+    expect((await rate.inspectForOwner()).lifetimeCount).toBe(3);
+    expect((await services.reserveRateSlot()).allowed).toBe(false);
+    expect(services.providerCallsAuthorized).toBe(false);
+  });
+
   it('the live-inference stop latch denies requests without invoking any pricing path',async()=>{
     const services=makeLocalJudgeBindingServices(env);
     const fake=fakeSecurity(services);
