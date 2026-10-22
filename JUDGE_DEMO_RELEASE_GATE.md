@@ -7,14 +7,16 @@ This checklist documents the gap between the public, static offline demo and an 
 - [x] Public Cloudflare Free static site serves four offline example drafts, with privacy warnings, acknowledgement reset, copy controls, and manual reminders.
 - [x] Public GitHub repository contains the Node.js owner-only NVIDIA Nemotron 3 Nano integration; a separately authorized, earlier single live test generated and validated four drafts.
 - [x] Public site is static-only (wrangler.jsonc assets), with no public inference endpoint or provider credentials.
-- [x] The judge security building blocks are on unmerged safety branches. The integrated pipeline uses mocks and always reports providerCallsAuthorized:false.
+- [x] The judge security building blocks are on unmerged safety branches. Local workerd/SQLite tests cover session issuance, replay, global quotas, persistent emergency stop, and simulated HTTP routing. The integrated pipeline uses mocks and always reports providerCallsAuthorized:false.
+- [x] Offline cost-envelope tests compare the planned specific model against Nebius published October 21, 2026 reference rates ($0.06 input / $0.24 output per 1M). At 2,000+1,250 maximum tokens this reference computes $0.000420 per request, **not an invoice or hard cap**.
+- [x] Offline response validation checks mocked OpenAI-style usage totals, token ceilings, price reference, model name and safety-screened four-platform drafts; actual billable provider usage/response fields have not been verified end-to-end.
 - [x] The user has asked Devpost organizers whether a capped, fictional-prompts-only judge demo meets their access requirements; response pending.
-- [x] Nebius dashboard showed $50 account balance, $0.88 trial credits (four days remaining when inspected), and a saved card.
+- [x] Provider account and payment details are deliberately **not** documented in the public code repository. Billing controls need a private, direct account check before approval.
 - [ ] Provider-enforced hard spending cap demonstrated. **NOT VERIFIED.** App-side reservation is not a provider-side cap.
 
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
-2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, and whether an account-level enforceable hard stop is supported. A $1 application-side reservation is NOT a Nebius guarantee; the $50 balance and saved card increase possible exposure.
+2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.
 3. **Separate owner authorization:** Obtain explicit approval for the exact live deployment, acceptable actual financial exposure, Cloudflare Free resources, and each new potentially billable test. A previous one-off test is not blanket approval.
 4. **Real infrastructure:** Implement and review one canonical Cloudflare SQLite Durable Object for global quota, globally enforced session issuance limits, one-use CSRF/session tokens, HTTPS origin controls, and replay/timeout/race denial. Test on actual workerd/Cloudflare Free runtime before exposing any binding.
 5. **Bot/DoS controls:** Configure actual Turnstile with exact public hostname and server-side Siteverify. Turnstile is not authentication.
@@ -32,3 +34,16 @@ This checklist documents the gap between the public, static offline demo and an 
 - [ ] Verified judge access retained through December 15, 2026.
 
 **No changes to live Cloudflare site. No API calls. No payments. No secret provisioning. Do not merge safety branches or activate live inference without separate permission.**
+
+## October 2026 no-reply fallback and safe deadline
+- **Official submission cutoff:** Friday October 30, 2026, 10:00 AM PDT. Do not leave the first submission attempt until the last morning.
+- **Judging availability requirement:** through Tuesday December 15, 2026. The rules say free access **without restriction**, though judges can choose to judge from descriptions/video alone. This does **not** constitute permission for an offline-only substitute or a 20-call shared cap; organizer interpretation is still unresolved.
+- **October 26 gate:** in the absence of guidance, default to a truthful offline submission, not unapproved paid inference. Review separately whether a live architecture can satisfy both provider spend safety and the judging rule.
+- **October 28–29 target:** submit the most accurate completed demonstration before the Oct 30 cutoff; do not invent runtime functionality. Correct or update only within Devpost's permitted submission rules.
+- **Stop/go rule:** no new paid provider requests or live deployment until the owner separately approves actual possible charges, and payment-method / top-up / provider hard-cap uncertainty is reviewed.
+
+## Local testing vs actual financial safety
+- The 20 lifetime attempts / five cents reservation is an **application simulation**, not a Nebius account budget or guaranteed bill maximum. A cap on attempts may also conflict with unrestricted judging access.
+- The posted-rate token estimate assumes one successful call, no retry, and counts exactly as expected. It cannot include unreported tokens, billing anomalies, abuse before enforcement, or other account usage.
+- The emergency-stop implementation is a local, unbound test fixture. No operational public kill switch or verified provider-level stop is currently deployed.
+- Pricing, response shape, current model availability, and account payment settings require independent real verification before activation.
