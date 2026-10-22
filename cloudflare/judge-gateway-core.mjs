@@ -154,7 +154,6 @@ export function disabledJudgeGatewayResponse() {
       'Referrer-Policy':'no-referrer',
       'X-Content-Type-Options':'nosniff',
       'X-Frame-Options':'DENY',
-      'Access-Control-Allow-Origin':'',
       'Content-Security-Policy':"default-src 'none'; connect-src 'none'; frame-ancestors 'none'"
     }
   });
