@@ -72,6 +72,13 @@ test('old workshop, contact details, and prompt overrides are denied without any
  });
 });
 
+test('browser fixture stays identical to pinned server-only business prompt',async()=>{
+ const browser=await readFile(new URL('../public/studio-owner-live.js',import.meta.url),'utf8');
+ assert.ok(browser.includes('const fixture='+JSON.stringify(OWNER_LIVE_IDEA)+';'));
+ const script=await readFile(new URL('../scripts/start-owner-live.mjs',import.meta.url),'utf8');
+ assert.match(script,/Exact user text: \\u0024\\{OWNER_LIVE_IDEA\\}/);
+});
+
 test('default preview blocks owner trial without any provider requests; protected CSP',async()=>{
  await withServer(null,async base=>{
    assert.equal((await fetch(base+'/api/owner-live/session')).status,404);
