@@ -5,6 +5,7 @@ on:
       - safety/cloudflare-workerd-runtime-tests
       - safety/judge-workerd-integration-offline
       - safety/judge-http-contract-offline
+      - safety/judge-emergency-stop-offline
 
 permissions:
   contents: read

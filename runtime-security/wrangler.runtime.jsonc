@@ -5,16 +5,38 @@
   "workers_dev": false,
   "durable_objects": {
     "bindings": [
-      {"name":"TEST_QUOTA","class_name":"SocialSparkJudgeLifetimeQuota"},
-      {"name":"TEST_SESSIONS","class_name":"SocialSparkJudgeSessions"},
-      {"name":"TEST_RATE","class_name":"SocialSparkGlobalSessionRate"}
+      {
+        "name": "TEST_QUOTA",
+        "class_name": "SocialSparkJudgeLifetimeQuota"
+      },
+      {
+        "name": "TEST_SESSIONS",
+        "class_name": "SocialSparkJudgeSessions"
+      },
+      {
+        "name": "TEST_RATE",
+        "class_name": "SocialSparkGlobalSessionRate"
+      },
+      {
+        "name": "TEST_STOP",
+        "class_name": "SocialSparkJudgeEmergencyStop"
+      }
     ]
   },
   "migrations": [
-    {"tag":"local-tests-v1","new_sqlite_classes":[
-      "SocialSparkJudgeLifetimeQuota",
-      "SocialSparkJudgeSessions",
-      "SocialSparkGlobalSessionRate"
-    ]}
+    {
+      "tag": "local-tests-v1",
+      "new_sqlite_classes": [
+        "SocialSparkJudgeLifetimeQuota",
+        "SocialSparkJudgeSessions",
+        "SocialSparkGlobalSessionRate"
+      ]
+    },
+    {
+      "tag": "local-tests-v2",
+      "new_sqlite_classes": [
+        "SocialSparkJudgeEmergencyStop"
+      ]
+    }
   ]
 }
