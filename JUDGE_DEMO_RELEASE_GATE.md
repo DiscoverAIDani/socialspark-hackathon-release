@@ -39,6 +39,14 @@ This checklist documents the gap between the public, static offline demo and an 
 - [ ] **No live secret provisioning** until a separate approved Worker version, financial-risk agreement and launch checklist are ready. Cloudflare documents that `wrangler secret put` creates a version **and deploys it immediately**; never run it casually to prepare this project. A dashboard secret addition also requires a deployment. See https://developers.cloudflare.com/workers/configuration/secrets/
 - [ ] Real Siteverify connectivity, a secret stored exclusively in Cloudflare, server-side abuse controls, judge UI integration, provider cost controls and an explicit owner-approved deployment are still blockers.
 
+## October 22, 2026: Nemotron fixed request builder
+- [x] A non-networked request-envelope builder uses only the **approved fictional beginner workshop** and the pre-existing four-platform SocialSpark prompt. It rejects client-supplied prompts, model overrides, additional fields, and arbitrary post text.
+- [x] The model is fixed to `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B`, with `max_tokens:1250`, `stream:false` and no retry mechanism.
+- [x] It refuses missing, malformed, or over-limit **simulated** trusted token-counter results and never outputs provider authorization, API credentials or an HTTP request.
+- [x] Foundation tests: **392/392 passed** on this safety branch; production `main` stays static-only.
+- [ ] The **actual model-compatible server tokenizer is NOT integrated**. A test callback is not authoritative token measurement or billing protection. A separately reviewed Worker implementation and provider billing controls remain required.
+- [ ] No real Nemotron call, provider transport, public inference API, or runtime secret has been configured. This is NOT a live demonstration.
+
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
 2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.
