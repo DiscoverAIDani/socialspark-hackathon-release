@@ -11,13 +11,12 @@
 - Rules: https://nebiusglobalaihackathon.devpost.com/rules
 - Organizer forum question about a 20-request shared budget still has **no organizer reply** as of this review: https://nebiusglobalaihackathon.devpost.com/forum_topics/45534-clarifying-free-judging-access-for-apps-with-metered-apis
 
-## Owner-controlled financial requirements (not negotiable by inference)
+## Owner-only financial authorization is required
 
-- Owner has confirmed **automatic Nebius top-ups OFF**. Do not reopen that investigation without new evidence or the owner's request.
-- Owner stated **$25 maximum acceptable out-of-pocket exposure** from October 30 to December 15, 2026.
-- This is **NOT** consent to use the card, make a billable request, modify the billing settings, provision secrets, deploy, or launch AI.
-- There is **NO verified provider account-level hard stop** at $25. The displayed Nebius balance and disabled auto-top-ups alone are not a contractually guaranteed exact $25 cap.
-- Cloudflare Free plan resource limits and app-side quotas are important secondary guardrails; they cannot guarantee Nebius billing.
+- The owner maintains their **personal financial risk ceiling and billing settings privately**, outside this public repository.
+- No budget or app-side quota constitutes consent to use a payment method, make a billable request, modify provider billing, provision secrets or deploy.
+- There is **NO verified account-level provider spending hard stop**. The application quota is not a guaranteed invoice cap.
+- Cloudflare Free plan resource limits and app-side quotas are secondary guardrails; they do not guarantee Nebius billing.
 
 ## Candidate #1: keep the static demo only
 - **Risk:** no new inference costs; currently working.
@@ -39,7 +38,7 @@
 ## Concrete release gate — all must be answered before any deployment or paid request
 
 - [ ] **Rules:** written organizer acceptance of restricted demo, or revised access architecture with documented defensible compliance rationale.
-- [ ] **Costs:** documented actual provider maximum financial exposure or a separate explicit owner risk acceptance that acknowledges the absence of a hard stop. The known $25 ceiling alone is NOT such authorization.
+- [ ] **Costs:** documented actual provider maximum financial exposure or a separate explicit owner risk acceptance that acknowledges the absence of a hard stop. Do not record the owner's private ceiling in a public repository.
 - [ ] **Server:** final security review of a real Cloudflare Worker with no publicly writable quota reset or secret leakage; production access/rollback and emergency stop tested.
 - [ ] **Secrets:** owner provisions private Turnstile and Nebius secrets only through an approved secure server interface, never chat/GitHub/client JS.
 - [ ] **Verification:** real Cloudflare Siteverify success, hostname/action/freshness checks and replay control; fake tests are not substitutes.
