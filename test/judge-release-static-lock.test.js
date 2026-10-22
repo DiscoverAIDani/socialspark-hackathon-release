@@ -22,7 +22,7 @@ test('production Wrangler config has ONLY static site keys',async()=>{
   assert.deepEqual(Object.keys(cfg).sort(),['assets','compatibility_date','name']);
   assert.equal(cfg.name,'socialspark-hackathon-release');
   assert.deepEqual(cfg.assets,{directory:'./public',not_found_handling:'none'});
-  assert.match(cfg.compatibility_date,/^\\d{4}-\\d{2}-\\d{2}$/);
+  assert.match(cfg.compatibility_date,/^\d{4}-\d{2}-\d{2}$/);
 });
 
 test('production Wrangler config has no executable Worker or paid bindings',async()=>{
@@ -36,14 +36,14 @@ test('production Wrangler config has no executable Worker or paid bindings',asyn
 
 test('current public CSP denies browser outbound connections',async()=>{
   const headers=await read('public/_headers');
-  assert.match(headers,/Content-Security-Policy:[^\\r\\n]*connect-src 'none'/);
-  assert.doesNotMatch(headers,/connect-src\\s+(?:https?:|\\*|self)/i);
+  assert.match(headers,/Content-Security-Policy:[^\r\n]*connect-src 'none'/);
+  assert.doesNotMatch(headers,/connect-src\s+(?:https?:|\*|self)/i);
 });
 
 test('current public entrypoint explicitly describes offline behavior',async()=>{
   const html=await read('public/index.html');
   assert.match(html,/Offline examples only[^<]*real AI is not enabled/i);
-  assert.doesNotMatch(html,/data-socialspark-owner-live\\s*=\\s*["']yes["']/);
+  assert.doesNotMatch(html,/data-socialspark-owner-live\s*=\s*["']yes["']/);
 });
 
 test('locked judge policy is non-live regardless of caller request',()=>{
@@ -74,18 +74,18 @@ test('isolated workerd test configuration cannot be mistaken for production',asy
 test('repository npm scripts do not run Cloudflare deployment commands',async()=>{
   const pkg=await readJson('package.json');
   for(const [name,command] of Object.entries(pkg.scripts??{})){
-    assert.doesNotMatch(command,/\\bwrangler(?:\\.cmd)?\\s+(?:deploy|publish|secret|versions)\\b/i,name);
-    assert.doesNotMatch(command,/\\bnpx\\s+cloudflare\\s+deploy\\b/i,name);
+    assert.doesNotMatch(command,/\bwrangler(?:\.cmd)?\s+(?:deploy|publish|secret|versions)\b/i,name);
+    assert.doesNotMatch(command,/\bnpx\s+cloudflare\s+deploy\b/i,name);
   }
 });
 
 test('GitHub Actions workflows contain no deployment or secret-provisioning steps',async()=>{
   const workflowDir=new URL('../.github/workflows/',import.meta.url);
-  const entries=(await readdir(workflowDir)).filter(n=>/\\.ya?ml$/i.test(n));
+  const entries=(await readdir(workflowDir)).filter(n=>/\.ya?ml$/i.test(n));
   assert.ok(entries.length>=2,'expected test workflows are present');
   for(const filename of entries){
     const yaml=await readFile(new URL(filename,workflowDir),'utf8');
-    assert.doesNotMatch(yaml,/\\bwrangler(?:\\.cmd)?\\s+(?:deploy|publish|secret\\s+(?:put|delete)|versions\\s+(?:deploy|secret))\\b/i,filename);
-    assert.doesNotMatch(yaml,/cloudflare\\/wrangler-action@/i,filename);
+    assert.doesNotMatch(yaml,/\bwrangler(?:\.cmd)?\s+(?:deploy|publish|secret\s+(?:put|delete)|versions\s+(?:deploy|secret))\b/i,filename);
+    assert.doesNotMatch(yaml,/cloudflare\/wrangler-action@/i,filename);
   }
 });
