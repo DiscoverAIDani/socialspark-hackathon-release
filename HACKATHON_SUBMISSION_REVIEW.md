@@ -94,10 +94,7 @@ actual recorded runtime evidence, keeping the video <3 minutes.
 ## Boundaries and next decision
 
 The app's current 20-attempt quota/$1 simulated reservation is **not**
-a guaranteed provider bill limit. Owner has confirmed that automatic top-ups
-are OFF and stated maximum acceptable **out-of-pocket** exposure of $25 for
-Oct 30–Dec 15. This is not authorization for a new billable request or live
-deployment. Independent go-live consent, credentials setup, actual tokenizer,
+a guaranteed provider bill limit. Personal billing controls and risk tolerance are tracked privately, not in this public repository. This is not authorization for a new billable request or live deployment. Independent go-live consent, credentials setup, actual tokenizer,
 provider response/cost reconciliation, verified Turnstile and abuse mitigation
 are still pending.
 
