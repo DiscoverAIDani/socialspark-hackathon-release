@@ -81,9 +81,14 @@ actual recorded runtime evidence, keeping the video <3 minutes.
 - [ ] Save and submit **before** Oct 30 at 10:00 AM PDT; confirm Devpost shows
   **submitted**, not merely the 4/5 draft state.
 
+## Submission fields already completed
+
+- [x] Public YouTube demo entered and playable; do not re-record or request it again.
+- [x] Working demo URL entered; do not request it again.
+
 ## Pending submission details
 
-- Last retrieved Devpost snapshot showed the **Working demo URL** field empty (`https://` placeholder), although the YouTube video link had been entered. Confirm only whether the working demo URL is still blank; existing static demo URL: https://socialspark-hackathon-release.daniellewilcott.workers.dev/. Describe the site accurately as offline examples until live inference is separately approved.
+- [x] **Working demo URL:** user confirms it has already been entered in Devpost: https://socialspark-hackathon-release.daniellewilcott.workers.dev/. Do not request or re-enter it. The site currently shows offline examples until live inference is separately approved.
 - Current Devpost state was **Draft, 4/5 steps complete**; do not claim submitted until the final status confirms it.
 
 ## Boundaries and next decision
