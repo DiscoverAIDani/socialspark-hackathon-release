@@ -7,6 +7,8 @@ import {env,exports} from 'cloudflare:workers';
 import {runInDurableObject,evictDurableObject} from 'cloudflare:test';
 import {offlineJudgeSessionHttp}
   from '../cloudflare/judge-session-http-inert.mjs';
+import {createFutureSiteverifyTransport}
+  from '../cloudflare/judge-siteverify-outbound-contract.mjs';
 import {JUDGE_TURNSTILE_PUBLIC}
   from '../judge-preview/turnstile-public-config.mjs';
 import {LOCAL_JUDGE_CANONICAL_BINDINGS}
@@ -190,6 +192,55 @@ describe('unbound offline HTTP session adapter',()=>{
     expect(response.status).toBe(403);
     expect(response.headers.has('set-cookie')).toBe(false);
     expect(fake.calls()).toBe(0);
+  });
+
+  it('canonical outbound Siteverify transport composes with local HTTP response adapter',async()=>{
+    await seed();
+    let networkAttempts=0;
+    const wrapped=createFutureSiteverifyTransport({
+      send:async(url,options)=>{
+        networkAttempts++;
+        expect(url).toBe(TURNSTILE_VERIFY_ENDPOINT);
+        expect(options.redirect).toBe('error');
+        expect(options.cache).toBe('no-store');
+        expect(JSON.parse(options.body)).toStrictEqual({
+          secret:SECRET,response:CHALLENGE
+        });
+        return Response.json({
+          success:true,
+          hostname:JUDGE_TURNSTILE_PUBLIC.hostname,
+          action:TURNSTILE_JUDGE_ACTION,
+          challenge_ts:new Date(Date.now()-1000).toISOString()
+        });
+      }
+    });
+    const response=await offlineJudgeSessionHttp(
+      request(),bindings(),{siteverifyTransport:wrapped}
+    );
+    expect(response.status).toBe(200);
+    expect(networkAttempts).toBe(1);
+    expect((await response.json()).providerCallsAuthorized).toBe(false);
+    expect((await exports.default.fetch(request())).status).toBe(404);
+  });
+
+  it('simulated outbound transport errors cannot issue a judge cookie',async()=>{
+    await seed();
+    let networkAttempts=0;
+    const wrapped=createFutureSiteverifyTransport({
+      send:async()=>{
+        networkAttempts++;
+        throw Error('private fake transport error');
+      }
+    });
+    const response=await offlineJudgeSessionHttp(
+      request(),bindings(),{siteverifyTransport:wrapped}
+    );
+    expect(response.status).toBe(403);
+    expect(response.headers.get('set-cookie')).toBeNull();
+    expect(networkAttempts).toBe(1);
+    expect((await response.json()).providerCallsAuthorized).toBe(false);
+    const rate=named(env.TEST_RATE,LOCAL_JUDGE_CANONICAL_BINDINGS.TEST_RATE);
+    expect((await rate.inspectForOwner()).lifetimeCount).toBe(0);
   });
 
   it('all generation HTTP requests remain permanently disabled',async()=>{
