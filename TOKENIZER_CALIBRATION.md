@@ -74,8 +74,7 @@ No model response is generated; no outbound challenge or provider call exists.
   potentially billable Nebius request.
 - Confirmation of organizer acceptance if requesting a finite judge quota.
 - A decision about how to satisfy unrestricted judging while respecting the
-  owner's $25 maximum acceptable out-of-pocket exposure. Auto top-ups were
-  confirmed OFF and need not be rechecked repeatedly.
+  the owner's privately documented financial exposure limit. Provider billing details are not stored in public project files.
 
 The automated `tokenizer-offline-check.yml` CI runs only exporter and
 Python syntax checks. It does NOT load or download a real tokenizer, so it
