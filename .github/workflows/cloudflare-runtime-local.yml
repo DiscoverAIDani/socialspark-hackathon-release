@@ -9,6 +9,7 @@ on:
       - safety/judge-shutdown-preflight-offline
       - safety/judge-canonical-do-rpc-offline
       - safety/turnstile-siteverify-offline-binding
+      - safety/judge-session-http-inert-offline
 
 permissions:
   contents: read
