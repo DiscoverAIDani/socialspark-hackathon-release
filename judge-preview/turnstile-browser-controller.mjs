@@ -59,7 +59,7 @@ export function createOfflineJudgeTurnstileController({
       now-receivedAt<JUDGE_TURNSTILE_PUBLIC.maxAgeMs;
   };
   const acceptToken=value=>{
-    if(disposed||widgetId===null)return;
+    if(disposed||status!==STATUS.waiting)return;
     let now;
     try{now=clock();}catch{clear(STATUS.error);return;}
     if(typeof value!=='string'||!VALID_TOKEN.test(value)||
@@ -76,7 +76,7 @@ export function createOfflineJudgeTurnstileController({
     // A real Turnstile callback may fire synchronously during render()
     // before render() has returned its widget ID. Allow that only during mount.
     if(disposed)return;
-    if(widgetId===null&&status!==STATUS.waiting)return;
+    if(status!==STATUS.waiting)return;
     acceptToken(value);
   };
 
