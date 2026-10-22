@@ -25,7 +25,7 @@ export function isExpectedJudgePageOrigin(origin){
     const url=new URL(origin);
     return url.protocol==='https:' &&
       url.hostname===JUDGE_TURNSTILE_PUBLIC.hostname &&
-      url.origin===origin &&
+      url.port==='' && url.origin===origin &&
       url.username==='' && url.password==='' &&
       !url.search && !url.hash && url.pathname==='/';
   }catch{return false;}
