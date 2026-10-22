@@ -38,6 +38,39 @@ export class SocialSparkJudgeSessions extends DurableObject {
     } catch {return deny('session-storage-unavailable');}
   }
 
+  /**
+   * INTERNAL RPC ONLY: receive hashes created by the trusted Worker rather
+   * than generating browser tokens within this Durable Object.
+   * The actual nowMs is obtained here, not accepted from the caller.
+   * This is not bound to a public HTTP gateway or live paid inference.
+   */
+  async issueDigestForOfflineGateway({sessionHash,csrfHash}={}){
+    try {
+      const decision=this.ctx.storage.transactionSync(
+        ()=>issueJudgeSessionInTransaction(this.ctx.storage.kv,{
+          sessionHash,csrfHash,nowMs:Date.now()
+        })
+      );
+      if(!decision.allowed)return decision;
+      await this.ctx.storage.sync();
+      return {allowed:true,code:'offline-session-digest-issued'};
+    }catch{return deny('session-storage-unavailable');}
+  }
+
+  /** Persistently consume one hashed session+CSRF pair before any simulation. */
+  async consumeDigestForOfflineGateway({sessionHash,csrfHash}={}){
+    try {
+      const decision=this.ctx.storage.transactionSync(
+        ()=>consumeJudgeSessionInTransaction(this.ctx.storage.kv,{
+          sessionHash,csrfHash,nowMs:Date.now()
+        })
+      );
+      if(!decision.allowed)return decision;
+      await this.ctx.storage.sync();
+      return {allowed:true,code:'offline-session-digest-consumed'};
+    }catch{return deny('session-storage-unavailable');}
+  }
+
   /** Internal, unbound one-time CSRF validation/consumption primitive. */
   async consumeForFutureGateway(cookieSecret,csrfSecret) {
     try {

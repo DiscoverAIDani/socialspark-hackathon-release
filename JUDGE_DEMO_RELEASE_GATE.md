@@ -14,6 +14,15 @@ This checklist documents the gap between the public, static offline demo and an 
 - [x] Provider account and payment details are deliberately **not** documented in the public code repository. Billing controls need a private, direct account check before approval.
 - [ ] Provider-enforced hard spending cap demonstrated. **NOT VERIFIED.** App-side reservation is not a provider-side cap.
 
+## October 21–22, 2026: verified local Cloudflare RPC integration
+- [x] Canonical local Durable Object bridge now targets one **fixed** named instance each for sessions, global rate, lifetime quota, and emergency stop. No browser-selected object IDs or fallback in-memory quota.
+- [x] Real local Cloudflare SQLite tests verify hash-only one-time issuance/consumption via internal RPC, no replay after eviction, and 80 concurrent reservations producing exactly 20 allowed + 60 denied under the existing **prototype** lifetime quota.
+- [x] Real local session-rate tests verify 25 simultaneous reservations result in exactly 3 allowed within the fixed minute window.
+- [x] At the end of those tests, the **actual default Worker** still returns HTTP 503 for AI generation and 404 for public session issuance. The current site's production Wrangler configuration remains static assets only.
+- [x] Cloudflare local runtime CI **31/31 passed** on the development branch; foundation tests also passed.
+- [ ] The proposed shared 20-request cap is **NOT established as Devpost compliant**. A deliberate limit can block legitimate judges and is NOT free unrestricted access.
+- [ ] Real Turnstile hostname/sitekey/secret, Siteverify, trusted model tokenizer, exact price and provider-usage verification, provider-enforced spending limit, secret provisioning, authenticated operations, production rollout and independent authorized live test are **NOT done**.
+
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
 2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.
