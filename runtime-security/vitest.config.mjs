@@ -7,7 +7,7 @@ export default defineConfig({
     wrangler:{configPath:'./wrangler.runtime.jsonc'}
   })],
   test:{
-    include:['cloudflare-checks.mjs','judge-full-flow-checks.mjs','judge-http-flow-checks.mjs','emergency-stop-checks.mjs'],
+    include:['cloudflare-checks.mjs','judge-full-flow-checks.mjs','judge-http-flow-checks.mjs','emergency-stop-checks.mjs','emergency-gated-flow-checks.mjs'],
     maxWorkers:1,
     testTimeout:30_000
   }
