@@ -15,6 +15,8 @@ import {
 } from '../security/judge-demo-policy.mjs';
 import {createNebiusMessages}
   from '../security/nebius-draft-adapter.mjs';
+import {auditOfflineFixedJudgePayload}
+  from './judge-prompt-byte-gate.mjs';
 
 const reject=reason=>Object.freeze({
   ok:false,reason,providerCallsAuthorized:false
@@ -42,6 +44,12 @@ export async function buildOfflineNemotronEnvelope({
       max_tokens:JUDGE_DEMO_POLICY.maximumOutputTokensPerAttempt,
       stream:false
     };
+    const wireCheck=auditOfflineFixedJudgePayload({
+      body,exampleId:request.exampleId
+    });
+    if(wireCheck.ok!==true)return reject(wireCheck.reason);
+    // A byte-size check is NOT an authoritative token count. Keep the
+    // separately verified server-side tokenizer requirement unchanged.
     const measured=await countTrustedTokens({
       model:body.model,
       messages:body.messages,
@@ -60,6 +68,7 @@ export async function buildOfflineNemotronEnvelope({
       mode:'offline-fixed-request-only',
       exampleId:request.exampleId,
       measuredInputTokens:measured,
+      auditedWireBytes:wireCheck.wireBytes,
       requestBody:Object.freeze({
         ...body,messages:Object.freeze(
           messages.map(x=>Object.freeze({...x}))
