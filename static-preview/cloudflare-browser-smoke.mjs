@@ -120,6 +120,8 @@ test('local Wrangler static assets + real Chromium smoke; no deployment', {timeo
     });
 
     await t.test('privacy warning blocks copying until acknowledgement, then resets on edit',async()=>{
+      await page.locator('#privacy-lab > summary').click();
+      assert.equal(await page.locator('#privacy-lab').getAttribute('open'),'');
       const draft=page.locator('#draft');
       await draft.fill('Call me at 916-555-0198.');
       assert.equal(await page.locator('#copy').isDisabled(),true);
@@ -146,6 +148,8 @@ test('local Wrangler static assets + real Chromium smoke; no deployment', {timeo
       await page.setViewportSize({width:390,height:844});
       await page.reload({waitUntil:'load'});
       assert.equal(await page.locator('#studio-idea').isVisible(),true);
+      assert.equal(await page.locator('#privacy-lab > summary').isVisible(),true);
+      await page.locator('#privacy-lab > summary').click();
       assert.equal(await page.locator('#draft').isVisible(),true);
       assert.equal(await page.locator('#studio-create').isVisible(),true);
       assert.deepEqual(pageErrors,[]);
