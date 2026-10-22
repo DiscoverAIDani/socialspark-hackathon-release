@@ -47,6 +47,14 @@ This checklist documents the gap between the public, static offline demo and an 
 - [ ] The **actual model-compatible server tokenizer is NOT integrated**. A test callback is not authoritative token measurement or billing protection. A separately reviewed Worker implementation and provider billing controls remain required.
 - [ ] No real Nemotron call, provider transport, public inference API, or runtime secret has been configured. This is NOT a live demonstration.
 
+## October 22, 2026: session HTTP response boundary, still not deployed
+- [x] Added an unbound, **local-test-only** HTTP response adapter for `POST /api/judge-demo/session`, using the existing strict request verifier, fake Turnstile Siteverify, shared SQLite-backed one-use sessions, and an emergency stop. No production Worker imports it.
+- [x] A successful **simulated** session returns only an ephemeral CSRF token and a `Secure; HttpOnly; SameSite=Strict` cookie. It never returns a model answer or inference permission.
+- [x] Generation requests always return `503 judge-live-ai-disabled`, even with valid test session dependencies. Missing transport, invalid origin, unsupported method, failed challenge, and stopped service never expose a session.
+- [x] Real local Cloudflare workerd/SQLite CI: **44/44 passed**, including seven new HTTP boundary tests. Original `main` remains assets-only.
+- [ ] This helper must remain excluded from the production Worker until separately authorized secure release. A mock Siteverify response is NOT real bot verification; no actual secret has been provisioned.
+- [ ] No account-level provider hard cap verified. Budget estimates and usage reservations do not guarantee invoice totals. Do not activate live AI or paid API without separate authorization.
+
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
 2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.
