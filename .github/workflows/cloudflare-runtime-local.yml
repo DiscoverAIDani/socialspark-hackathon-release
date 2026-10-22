@@ -1,0 +1,25 @@
+name: Local Cloudflare runtime safety checks
+on:
+  push:
+    branches:
+      - safety/cloudflare-workerd-runtime-tests
+
+permissions:
+  contents: read
+
+jobs:
+  workerd-local-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: runtime-security
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install isolated local testing tools (no production dependencies)
+        run: npm install --no-audit --no-fund
+      - name: Test real local Cloudflare workerd / SQLite — NO DEPLOY
+        run: npm test
