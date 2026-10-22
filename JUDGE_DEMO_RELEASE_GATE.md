@@ -55,6 +55,14 @@ This checklist documents the gap between the public, static offline demo and an 
 - [ ] This helper must remain excluded from the production Worker until separately authorized secure release. A mock Siteverify response is NOT real bot verification; no actual secret has been provisioned.
 - [ ] No account-level provider hard cap verified. Budget estimates and usage reservations do not guarantee invoice totals. Do not activate live AI or paid API without separate authorization.
 
+## October 22, 2026: isolated Siteverify outbound transport
+- [x] Reviewed Cloudflare's official [Turnstile server-side validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/) contract: HTTPS JSON POST to the exact Siteverify URL; 300-second token validity and one-time redemption.
+- [x] Prepared a no-default-network, no-retry transport adapter. It checks exact origin, POST method, content type, bounded `secret` and `response` fields, timeout signal, no redirects, and no unexpected visitor metadata; it reconstructs a canonical request rather than forwarding caller extras.
+- [x] Integrated the adapter into **local-only** HTTP + SQLite tests with an injected fake outbound sender. A success verifies only simulated session issuance, **never AI inference authorization**. Network failure must deny without a cookie or global rate/quota charge.
+- [ ] No production entrypoint imports the transport. No real Siteverify request or key provision has occurred. Connecting a real network sender and secret must await separate deployment approval; the provider model API is likewise disabled.
+- [ ] A passing Turnstile challenge is an anti-abuse control, not authentication, a guaranteed prevention of denial-of-service, a Nebius billing cap, or permission to send paid model requests.
+- [ ] Do not run `wrangler secret put` to stage a secret: Cloudflare documents that it immediately deploys a Worker version. Review an owner-controlled staged-version release instead when separately authorized.
+
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
 2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.
