@@ -1,0 +1,27 @@
+name: Local Cloudflare static browser smoke
+on:
+  push:
+    branches:
+      - safety/cloudflare-static-browser-smoke
+
+permissions:
+  contents: read
+
+jobs:
+  browser-local:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: static-preview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install isolated local Wrangler and browser test tools
+        run: npm install --no-audit --no-fund
+      - name: Install free Chromium runtime
+        run: npx playwright install --with-deps chromium
+      - name: Test real local Cloudflare static assets and browser — NO DEPLOY
+        run: npm test

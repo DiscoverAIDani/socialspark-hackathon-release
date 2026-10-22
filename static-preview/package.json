@@ -1,0 +1,13 @@
+{
+  "name": "socialspark-static-cloudflare-browser-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test cloudflare-browser-smoke.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.1",
+    "playwright": "1.64.1"
+  }
+}
