@@ -1,0 +1,20 @@
+{
+  "name": "socialspark-local-runtime-tests-do-not-deploy",
+  "main": "./fixture-worker.mjs",
+  "compatibility_date": "2026-10-21",
+  "workers_dev": false,
+  "durable_objects": {
+    "bindings": [
+      {"name":"TEST_QUOTA","class_name":"SocialSparkJudgeLifetimeQuota"},
+      {"name":"TEST_SESSIONS","class_name":"SocialSparkJudgeSessions"},
+      {"name":"TEST_RATE","class_name":"SocialSparkGlobalSessionRate"}
+    ]
+  },
+  "migrations": [
+    {"tag":"local-tests-v1","new_sqlite_classes":[
+      "SocialSparkJudgeLifetimeQuota",
+      "SocialSparkJudgeSessions",
+      "SocialSparkGlobalSessionRate"
+    ]}
+  ]
+}
