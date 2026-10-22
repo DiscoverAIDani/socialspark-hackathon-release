@@ -19,8 +19,8 @@ const fakeTransport=(url,req)=>{
  assert.equal(body.temperature,0.45);
  assert.equal(body.stream,false);
  assert.equal(body.max_tokens,1250);
- assert.equal(body.messages[1].content,'Tone: friendly\\nUser idea (untrusted masked content):\\n'+OWNER_LIVE_IDEA);
- assert.doesNotMatch(req.body,/916-555-0198|123 Main Street|\\[PHONE_1\\]|\\[ADDRESS_1\\]/);
+ assert.equal(body.messages[1].content,'Tone: friendly\nUser idea (untrusted masked content):\n'+OWNER_LIVE_IDEA);
+ assert.doesNotMatch(req.body,/916-555-0198|123 Main Street|\[PHONE_1\]|\[ADDRESS_1\]/);
  return {ok:true,body:new ReadableStream({start(c){c.enqueue(new TextEncoder().encode(JSON.stringify({choices:[{message:{content:JSON.stringify(fakeDrafts)}}]})));c.close();}})};
 };
 const input={maskedText:OWNER_LIVE_IDEA,revision:1,tone:'friendly'};
@@ -38,7 +38,7 @@ const session=async base=>(await (await fetch(base+'/api/owner-live/session')).j
 test('owner-only shop scenario is fixed, fictional, and locally clear before network access',()=>{
  assert.notEqual(OWNER_LIVE_IDEA,FIXTURE_IDEA);
  assert.match(OWNER_LIVE_IDEA,/fictional neighborhood shop/);
- assert.doesNotMatch(OWNER_LIVE_IDEA,/916-555-0198|123 Main Street|https?:\\/\\//);
+ assert.doesNotMatch(OWNER_LIVE_IDEA,/916-555-0198|123 Main Street|https?:\/\//);
  const review=reviewText(OWNER_LIVE_IDEA);
  const masked=createMaskPreview(OWNER_LIVE_IDEA);
  assert.equal(review.complete,true);
