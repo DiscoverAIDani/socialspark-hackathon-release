@@ -6,6 +6,7 @@ on:
       - safety/judge-workerd-integration-offline
       - safety/judge-http-contract-offline
       - safety/judge-emergency-stop-offline
+      - safety/judge-shutdown-preflight-offline
 
 permissions:
   contents: read
