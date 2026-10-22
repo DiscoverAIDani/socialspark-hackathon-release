@@ -123,13 +123,18 @@ describe('offline Turnstile secret binding + canonical durable session',()=>{
   it('missing or mistaken secret and missing transport fail before any lookup',async()=>{
     await initializeLocalSqlite();
     const verify=fakeSiteverify();
-    for(const secret of [undefined,'',JUDGE_TURNSTILE_PUBLIC.siteKey,
+    for(const secret of [null,'',JUDGE_TURNSTILE_PUBLIC.siteKey,
       'x',123,FAKE_SECRET+'\n']){
       const result=await issueOfflineJudgeSessionWithTurnstile(
         request(),fixtureEnv(secret),{siteverifyTransport:verify.transport});
       expect(result.accepted).toBe(false);
       expect(result.providerCallsAuthorized).toBe(false);
     }
+    const absentSecretEnv={...fixtureEnv()};
+    delete absentSecretEnv[JUDGE_TURNSTILE_SECRET_BINDING];
+    const noSecret=await issueOfflineJudgeSessionWithTurnstile(
+      request(),absentSecretEnv,{siteverifyTransport:verify.transport});
+    expect(noSecret.accepted).toBe(false);
     const missingTransport=await issueOfflineJudgeSessionWithTurnstile(
       request(),fixtureEnv());
     expect(missingTransport.accepted).toBe(false);
