@@ -18,7 +18,9 @@ if(isOwnerMode){
   const intro=document.querySelector('.spark-hero-copy p:last-child');
   if(intro)intro.textContent='One idea. Four platform drafts. Owner-only NVIDIA browser test is potentially billable; explicit authorization required.';
   const state=$('studio-ai-preflight');
-  if(state){const note=state.querySelector('.studio-ai-state');if(note)note.textContent='OWNER LIVE TRIAL · Nothing sent';}
+  const modeStatus=state?.querySelector('.studio-ai-state');
+  const setModeStatus=message=>{if(modeStatus)modeStatus.textContent=message;};
+  setModeStatus('OWNER LIVE TRIAL · Not requested');
   const tip=document.querySelector('.studio-tip');
   if(tip)tip.textContent='Owner-only live trial: sample drafts are local templates, while separately consented NVIDIA drafts come from Nebius. No automatic publishing. Review all results.';
   const prepNote=$('studio-ai-preflight-note');
@@ -67,6 +69,7 @@ if(isOwnerMode){
   requestButton.addEventListener('click',async()=>{
     if(!approval.checked||busy||consumed||!unchanged(snapshot)||exact.value!==fixture)return;
     busy=true;consumed=true;requestButton.disabled=true;
+    setModeStatus('OWNER LIVE TRIAL · Attempt in progress');
     say('One authorized live attempt in progress. A charge is possible even if it fails. Do not retry.');
     try {
       const response=await fetch('/api/owner-live/session',{credentials:'same-origin',cache:'no-store',redirect:'error'});
@@ -90,8 +93,9 @@ if(isOwnerMode){
         card.append(heading,text);posts.append(card);
       }
       review.hidden=false;
+      setModeStatus('OWNER LIVE TRIAL · 1 live response received');
       say('One real model response returned and validated locally. Review four drafts before applying. Add any approved public phone or address manually afterwards; no publishing.');
-    }catch{say('The owner live trial did not return four validated drafts. It may have incurred a charge. Do NOT retry or delete the attempt lock. Existing cards are unchanged.');}
+    }catch{setModeStatus('OWNER LIVE TRIAL · Attempt ended; check details');say('The owner live trial did not return four validated drafts. It may have incurred a charge. Do NOT retry or delete the attempt lock. Existing cards are unchanged.');}
     finally{busy=false;requestButton.disabled=true;}
   });
   applyCheck.addEventListener('change',()=>{applyButton.disabled=!applyCheck.checked||!pending||!unchanged(pending.snapshot);});
