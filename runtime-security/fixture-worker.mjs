@@ -7,4 +7,5 @@
 export {SocialSparkJudgeLifetimeQuota} from '../cloudflare/judge-quota-do.mjs';
 export {SocialSparkJudgeSessions} from '../cloudflare/judge-session-do.mjs';
 export {SocialSparkGlobalSessionRate} from '../cloudflare/judge-rate-do.mjs';
+export {SocialSparkJudgeEmergencyStop} from '../cloudflare/judge-emergency-stop-do.mjs';
 export {default} from '../cloudflare/judge-gateway-disabled-worker.mjs';
