@@ -23,6 +23,14 @@ This checklist documents the gap between the public, static offline demo and an 
 - [ ] The proposed shared 20-request cap is **NOT established as Devpost compliant**. A deliberate limit can block legitimate judges and is NOT free unrestricted access.
 - [ ] Real Turnstile hostname/sitekey/secret, Siteverify, trusted model tokenizer, exact price and provider-usage verification, provider-enforced spending limit, secret provisioning, authenticated operations, production rollout and independent authorized live test are **NOT done**.
 
+## October 21, 2026: owner-created Cloudflare Turnstile widget
+- [x] Owner created a **Managed** widget named SocialSpark Judge Demo on the existing `socialspark-hackathon-release.daniellewilcott.workers.dev` hostname; future security-rule skipping was left OFF.
+- [x] Public site key is pinned in `judge-preview/turnstile-public-config.mjs` **outside public/**; expected verification action agrees with the existing offline server Siteverify verifier.
+- [x] Browser-facing ephemeral token lifecycle and exact-origin checks are unit-tested with fake Turnstile. CI foundation tests **386/386 passed** after reviewing the port guard.
+- [ ] The owner has NOT shared or configured the private Turnstile secret. **Never ask for it in chat or put it in GitHub**; future Cloudflare secret binding requires owner-directed setup on a separately approved runtime.
+- [ ] No actual Turnstile script, challenge or Siteverify call has run. The public website continues using its no-network CSP and offline-only content.
+- [ ] All real AI / billing launch gates still apply, independently of the Turnstile widget.
+
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
 2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.
