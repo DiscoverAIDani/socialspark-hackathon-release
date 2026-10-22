@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - safety/cloudflare-workerd-runtime-tests
+      - safety/judge-workerd-integration-offline
 
 permissions:
   contents: read
