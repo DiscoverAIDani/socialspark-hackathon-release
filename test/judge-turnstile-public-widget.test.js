@@ -140,8 +140,8 @@ test('malformed challenge, bad origin or widget exceptions cannot become a grant
   });
   assert.equal(ctl2.mount().ok,true);
   invalid.records.config.callback('INVALID TOKEN WITH SPACES');
-  // Space is an ASCII printable character, so use an invalid control character.
-  assert.equal(ctl2.takeToken().ok,true);
+  // Tokens cannot include whitespace, newlines, or unbounded input.
+  assert.equal(ctl2.takeToken().ok,false);
   ctl2.reset();
   invalid.records.config.callback('HAS_NEWLINE\nNO');
   assert.equal(ctl2.takeToken().ok,false);
