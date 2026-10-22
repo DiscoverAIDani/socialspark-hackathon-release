@@ -10,6 +10,7 @@ on:
       - safety/judge-canonical-do-rpc-offline
       - safety/turnstile-siteverify-offline-binding
       - safety/judge-session-http-inert-offline
+      - safety/judge-turnstile-outbound-contract
 
 permissions:
   contents: read
