@@ -9,6 +9,7 @@ import {createConsentLedger} from './security/ai-consent-ledger.mjs';
 import {validateGeneratedDrafts} from './security/nebius-draft-adapter.mjs';
 import {FIXTURE_IDEA,FIXTURE_DRAFTS} from './security/nebius-fake-session.mjs';
 import {createOwnerLiveController} from './security/owner-live-controller.mjs';
+import {OWNER_LIVE_IDEA} from './security/owner-live-scenario.mjs';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
@@ -81,7 +82,7 @@ export function createAppServer({offlineBridge=false,ownerLiveTrial=null}={}) {
       };
       if(request.url==='/api/owner-live/session'){
         if(request.method!=='GET')return respond(405,{ok:false,code:'method-not-allowed'});
-        return respond(200,{ok:true,mode:'owner-live',scenario:FIXTURE_IDEA,csrf,used:live.used()});
+        return respond(200,{ok:true,mode:'owner-live',scenario:OWNER_LIVE_IDEA,csrf,used:live.used()});
       }
       const expectedOrigin=`http://${host}`;
       if(request.method!=='POST'||request.headers.origin!==expectedOrigin||request.headers['sec-fetch-site']!=='same-origin'||request.headers['x-socialspark-csrf']!==csrf||request.headers['content-type']!=='application/json')return respond(403,{ok:false,code:'request-not-authorized'});

@@ -6,10 +6,10 @@ import {open} from 'node:fs/promises';
 import {createConsentLedger} from './ai-consent-ledger.mjs';
 import {inspectOperatorKey,NANO_MODEL} from './fictional-live-test.mjs';
 import {requestNebiusDrafts} from './nebius-draft-adapter.mjs';
-import {FIXTURE_IDEA} from './nebius-fake-session.mjs';
+import {OWNER_LIVE_IDEA} from './owner-live-scenario.mjs';
 
 const fail=code=>({ok:false,code});
-const inputOk=body=>body&&Object.getPrototypeOf(body)===Object.prototype&&body.maskedText===FIXTURE_IDEA&&body.revision===1&&body.tone==='friendly';
+const inputOk=body=>body&&Object.getPrototypeOf(body)===Object.prototype&&body.maskedText===OWNER_LIVE_IDEA&&body.revision===1&&body.tone==='friendly';
 
 export function createOwnerLiveController({key,lockPath,fetchImpl=fetch,model=NANO_MODEL}={}){
   if(!inspectOperatorKey(key).ok||typeof lockPath!=='string'||!lockPath.trim()||model!==NANO_MODEL||typeof fetchImpl!=='function')throw new TypeError('Owner live gateway not configured');

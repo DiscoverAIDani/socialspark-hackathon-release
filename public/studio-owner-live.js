@@ -9,7 +9,7 @@ import {PLATFORMS} from './platform-drafts.js';
 const $=id=>document.getElementById(id);
 const isOwnerMode=document.documentElement.dataset.socialsparkOwnerLive==='yes';
 if(isOwnerMode){
-  const fixture='Invite people to a fictional beginner workshop.';
+  const fixture="Announce the grand opening of a fictional neighborhood shop. Invite customers to visit. Do not invent an address, phone number, website, opening date, business hours, or prices. The owner will add approved public contact details manually after reviewing the drafts.";
   const idea=$('studio-idea'),tone=$('studio-tone'),panel=$('owner-live-panel');
   const exact=$('owner-live-exact'),approval=$('owner-live-consent'),requestButton=$('owner-live-request');
   const status=$('owner-live-status'),review=$('owner-live-review'),posts=$('owner-live-posts');
@@ -43,12 +43,12 @@ if(isOwnerMode){
     if(busy||consumed)return;
     idea.value=fixture;idea.dispatchEvent(new Event('input',{bubbles:true}));
     tone.value='friendly';tone.dispatchEvent(new Event('change',{bubbles:true}));
-    say('Fictional sample loaded. Review the exact text before consenting. No request sent.');
+    say('Fictional shop idea loaded. Review the exact text before consenting. No request sent.');
   });
   $('owner-live-preview').addEventListener('click',()=>{
     if(busy||consumed)return;
     reset();
-    if(idea.value!==fixture||tone.value!=='friendly') {say('Only the exact fictional workshop example with Friendly tone is permitted. No request sent.');return;}
+    if(idea.value!==fixture||tone.value!=='friendly') {say('Only the fixed fictional shop announcement with Friendly tone is permitted. No request sent.');return;}
     try {
       const local=reviewText(idea.value),mask=createMaskPreview(idea.value);
       if(!local.complete||local.concerns||!mask.validation.passedKnownPatterns||mask.replacements.length||mask.maskedText!==fixture){say('Local screening failed; no text sent.');return;}
@@ -90,7 +90,7 @@ if(isOwnerMode){
         card.append(heading,text);posts.append(card);
       }
       review.hidden=false;
-      say('One real model response returned and validated locally. Review the four drafts before applying. No publishing.');
+      say('One real model response returned and validated locally. Review four drafts before applying. Add any approved public phone or address manually afterwards; no publishing.');
     }catch{say('The owner live trial did not return four validated drafts. It may have incurred a charge. Do NOT retry or delete the attempt lock. Existing cards are unchanged.');}
     finally{busy=false;requestButton.disabled=true;}
   });
