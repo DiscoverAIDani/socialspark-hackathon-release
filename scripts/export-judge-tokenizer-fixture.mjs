@@ -3,6 +3,8 @@
  * Does not run a model, load keys, send requests, or enable AI.
  * Usage: node scripts/export-judge-tokenizer-fixture.mjs > fixture.json
  */
+import {resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {JUDGE_DEMO_POLICY,getApprovedJudgeExample}
   from '../security/judge-demo-policy.mjs';
 import {createNebiusMessages}
@@ -33,6 +35,6 @@ export function getOfflineJudgeTokenizerFixture(){
   });
 }
 
-if(import.meta.url===new URL(process.argv[1]??'', 'file:').href){
+if(process.argv[1] && fileURLToPath(import.meta.url)===resolve(process.argv[1])){
   process.stdout.write(JSON.stringify(getOfflineJudgeTokenizerFixture())+'\n');
 }
