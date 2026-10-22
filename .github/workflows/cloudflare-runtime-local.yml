@@ -11,6 +11,7 @@ on:
       - safety/turnstile-siteverify-offline-binding
       - safety/judge-session-http-inert-offline
       - safety/judge-turnstile-outbound-contract
+      - safety/judge-complete-offline-rehearsal
 
 permissions:
   contents: read
