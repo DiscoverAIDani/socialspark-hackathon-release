@@ -31,6 +31,14 @@ This checklist documents the gap between the public, static offline demo and an 
 - [ ] No actual Turnstile script, challenge or Siteverify call has run. The public website continues using its no-network CSP and offline-only content.
 - [ ] All real AI / billing launch gates still apply, independently of the Turnstile widget.
 
+## October 21–22, 2026: Turnstile server-binding rehearsal
+- [x] Added an isolated Worker-side **binding contract** named `JUDGE_TURNSTILE_SECRET`; it reads the value from a future trusted Cloudflare server environment, never from the browser or repository. **The actual secret has NOT been set up or accessed.**
+- [x] Only an **explicitly injected test transport** is allowed. There is no fallback network fetch, no real Siteverify call, no NVIDIA request, and no public Worker route.
+- [x] The test handler refuses missing/invalid/mistaken site-key-as-secret values; verifies exact hostname/action and origin via fake Siteverify; checks replay, bad payloads, false verification and the emergency stop; all with canonical local SQLite Durable Object sessions.
+- [x] Local Cloudflare workerd/SQLite CI **37/37 passed** on this safety branch. Production `wrangler.jsonc` remains assets-only, without secrets, Worker bindings or enabled model inference.
+- [ ] **No live secret provisioning** until a separate approved Worker version, financial-risk agreement and launch checklist are ready. Cloudflare documents that `wrangler secret put` creates a version **and deploys it immediately**; never run it casually to prepare this project. A dashboard secret addition also requires a deployment. See https://developers.cloudflare.com/workers/configuration/secrets/
+- [ ] Real Siteverify connectivity, a secret stored exclusively in Cloudflare, server-side abuse controls, judge UI integration, provider cost controls and an explicit owner-approved deployment are still blockers.
+
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
 2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.

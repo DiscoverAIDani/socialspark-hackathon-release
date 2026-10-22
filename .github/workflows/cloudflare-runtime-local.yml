@@ -8,6 +8,7 @@ on:
       - safety/judge-emergency-stop-offline
       - safety/judge-shutdown-preflight-offline
       - safety/judge-canonical-do-rpc-offline
+      - safety/turnstile-siteverify-offline-binding
 
 permissions:
   contents: read
