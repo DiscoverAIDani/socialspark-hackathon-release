@@ -1,0 +1,24 @@
+name: Offline tokenizer preparation checks
+on:
+  push:
+    branches:
+      - safety/judge-offline-tokenizer-calibration
+
+permissions:
+  contents: read
+
+jobs:
+  offline-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify exporter emits parseable fictional fixture
+        run: node scripts/export-judge-tokenizer-fixture.mjs | python3 -m json.tool > /dev/null
+      - name: Check offline Python calibration syntax, no packages/network
+        run: python3 -m py_compile scripts/calibrate-judge-tokenizer-offline.py
+      - name: Run Node unit checks without any provider request
+        run: npm test

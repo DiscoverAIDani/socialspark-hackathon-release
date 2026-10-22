@@ -40,7 +40,15 @@ requirements below are fulfilled merely because a local simulation passed.
 runtime-access rules while the live endpoint is still disabled.** Update it
 after any separately authorized and proven online end-to-end test.
 
-## Suggested <= 3-minute video storyboard (not recorded)
+## Existing YouTube demonstration — completed, do not recreate
+
+- **Video:** https://youtu.be/WAiW3YW-UJw
+- **Title:** SocialSpark — AI Social Media Content Studio
+- **Length:** 1 minute 25 seconds; public playback without sign-in was previously verified.
+- **Devpost:** User already added this video in Project Details. The submission draft subsequently reached **4 of 5 steps completed** (not yet submitted).
+- The original recording is already sufficient for the short demo-video format; no new video is required. Do not treat its existing offline footage as proof of currently enabled public AI inference.
+
+## Optional alternate storyboard — NOT a required new video
 
 | Segment | On screen | Voiceover emphasis |
 | --- | --- | --- |
@@ -63,8 +71,7 @@ actual recorded runtime evidence, keeping the video <3 minutes.
   available through Dec 15; the shared 20-call cap is not presumed compliant.
 - [ ] Exact public repo URL, open source LICENSE, README setup steps, and
   submission project link verified.
-- [ ] Public YouTube video <3 minutes, with project running on its actual
-  intended device; link placed in the submission.
+- [x] Existing public YouTube demo (1:25): https://youtu.be/WAiW3YW-UJw; previously verified playable without sign-in and entered in the Devpost Project Details. Do not re-record unless the owner explicitly requests changes.
 - [ ] Technical description clearly names Nebius Token Factory and
   NVIDIA Nemotron 3 Nano.
 - [ ] Specific, authentic feedback about the model and Nebius tooling written
@@ -73,6 +80,16 @@ actual recorded runtime evidence, keeping the video <3 minutes.
 - [ ] Entrant chooses correct track and completes every required Devpost field.
 - [ ] Save and submit **before** Oct 30 at 10:00 AM PDT; confirm Devpost shows
   **submitted**, not merely the 4/5 draft state.
+
+## Submission fields already completed
+
+- [x] Public YouTube demo entered and playable; do not re-record or request it again.
+- [x] Working demo URL entered; do not request it again.
+
+## Pending submission details
+
+- [x] **Working demo URL:** user confirms it has already been entered in Devpost: https://socialspark-hackathon-release.daniellewilcott.workers.dev/. Do not request or re-enter it. The site currently shows offline examples until live inference is separately approved.
+- Current Devpost state was **Draft, 4/5 steps complete**; do not claim submitted until the final status confirms it.
 
 ## Boundaries and next decision
 
