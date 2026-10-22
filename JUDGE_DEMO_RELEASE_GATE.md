@@ -71,6 +71,12 @@ This checklist documents the gap between the public, static offline demo and an 
 - [ ] NVIDIA Nemotron 3 Nano supports reasoning; reasoning can consume the generation token allowance. Do not assume `max_tokens:1250` guarantees four usable final drafts. Verify hosted support for disabling thinking or another compatible approach **without an unauthorized billable call**. No undocumented `extra_body` flags have been inserted.
 - [ ] The official [Devpost hackathon rules](https://nebiusglobalaihackathon.devpost.com/rules) require a runtime Nebius call (or deployment on Nebius AI Cloud) and free, unrestricted judge access through Dec 15. Static examples and a shared cap alone do not establish eligibility; organizer clarification pending.
 
+## October 22, 2026: full offline judge-path integration test
+- [x] Added end-to-end local Cloudflare workerd/SQLite tests spanning canonical one-time sessions, a fake Turnstile result, persistent quota reservations, exact fictional Nemotron request, pinned **reference estimate**, and the established four-platform content-safety validator.
+- [x] A **simulated** valid response yields four fake, reviewed platform drafts without touching the public Worker, Cloudflare Siteverify, Nebius or any billing API. Returned modes remain labeled offline and `providerCallsAuthorized:false`.
+- [x] The test asserts that mismatched provider-style usage is rejected **after** reservation and that a possibly billable failed attempt is never refunded automatically; a pricing check denial stops before quota reservation. Emergency stop blocks the request and the existing actual Worker continues HTTP 503/404.
+- [ ] This is not evidence that the hosted Nemotron request succeeds, that the provider's model uses the same token count/response schema, or that the current 20-attempt cap is compliant with judge access. A separately approved live verification remains necessary.
+
 ## Decisions awaiting independent evidence and approval
 1. **Organizer's acceptance:** The proposed shared 20-attempt lifetime gate could exhaust before judging ends December 15, 2026. Obtain organizer guidance before treating a restricted demo as compliant. Never present offline examples as runtime inference.
 2. **Spend exposure:** Verify model availability, current input/output pricing, billable failures, maximum request and response size, actual auto-top-up state, and whether an account-level enforceable hard stop is supported. The $1 application-side reservation is NOT a Nebius guarantee. Keep account/payment details private.
