@@ -1,7 +1,7 @@
 /**
  * OFFLINE ONLY: construct a reviewed fixed Nemotron request envelope.
  *
- * This module cannot send a request: no fetch(), API endpoint, secrets,
+ * This module cannot send a request: no outbound network transport, API endpoint, secrets,
  * provider client, retries, HTTP handler, billing or activation. The request
  * is a TEST ARTIFACT only. Never treat {ok:true} as provider authorization.
  *
