@@ -1,0 +1,23 @@
+name: Local disabled Cloudflare Worker shell
+on:
+  push:
+    branches:
+      - safety/cloudflare-disabled-preview-shell
+permissions:
+  contents: read
+jobs:
+  disabled-preview-local:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    defaults:
+      run:
+        working-directory: static-preview
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install local testing dependencies
+        run: npm install --no-audit --no-fund
+      - name: Confirm disabled public API and offline assets locally — NO DEPLOY
+        run: node --test disabled-preview-worker-smoke.mjs
