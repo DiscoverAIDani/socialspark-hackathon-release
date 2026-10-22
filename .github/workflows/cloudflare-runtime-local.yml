@@ -1,0 +1,22 @@
+name: Local Cloudflare runtime safety checks
+on:
+  push:
+    branches:
+      - safety/cloudflare-workerd-runtime-tests
+
+permissions:
+  contents: read
+
+jobs:
+  workerd-local-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated testing tools (not production dependencies)
+        run: npm install --no-save 'vitest@^4.1.0' '@cloudflare/vitest-plugin'
+      - name: Run local Cloudflare workerd / SQLite tests — NO DEPLOY
+        run: ./node_modules/.bin/vitest run --config runtime-security/vitest.config.mjs
