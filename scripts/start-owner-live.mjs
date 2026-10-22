@@ -7,6 +7,7 @@ import {dirname,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createAppServer} from '../server.mjs';
 import {inspectOperatorKey,NANO_MODEL} from '../security/fictional-live-test.mjs';
+import {OWNER_LIVE_IDEA} from '../security/owner-live-scenario.mjs';
 
 const lockPath=join(dirname(fileURLToPath(import.meta.url)),'..','.socialspark-browser-owner-live-request.lock');
 const fail=msg=>{process.stderr.write(`${msg}\n`);process.exitCode=1;};
@@ -30,7 +31,7 @@ async function main(){
   }
   try {await access(lockPath);fail('A browser live attempt was reserved in this copy already. Do not delete the lock.');return;}
   catch(e){if(e.code!=='ENOENT'){fail('Unable to check request reservation.');return;}}
-  process.stdout.write(`\nSOCIALSPARK: SEPARATELY AUTHORIZED, POTENTIALLY BILLABLE BROWSER TRIAL\nModel: ${NANO_MODEL}\nExact user text: Invite people to a fictional beginner workshop.\nOne attempt only. No automatic retry. Local lock is NOT a Nebius spending cap.\n`);
+  process.stdout.write(`\nSOCIALSPARK: SEPARATELY AUTHORIZED, POTENTIALLY BILLABLE BROWSER TRIAL\nModel: ${NANO_MODEL}\nExact user text: ${OWNER_LIVE_IDEA}\nOne attempt only. No automatic retry. Local lock is NOT a Nebius spending cap.\n`);
   const rl=createInterface({input:process.stdin,output:process.stdout});
   let response;
   try {response=await rl.question('Type exactly ENABLE NEW POTENTIALLY BILLABLE BROWSER TRIAL to continue: ');}finally{rl.close();}
