@@ -16,6 +16,7 @@ const clear = $('studio-clear');
 const inspectAI = $('studio-inspect-ai');
 const proposedAI = $('studio-ai-masked');
 const aiNote = $('studio-ai-preflight-note');
+const isOwnerTrial = document.documentElement.dataset.socialsparkOwnerLive === 'yes';
 const reviewedAI = $('studio-ai-reviewed');
 const counter = $('studio-idea-counter');
 const hub = document.querySelector('.spark-hub');
@@ -61,7 +62,9 @@ function resetAIReview() {
   proposedAI.value = '';
   reviewedAI.checked = false;
   reviewedAI.disabled = true;
-  aiNote.textContent = 'No real Nebius AI requests are possible from this browser. Inspect the current idea to see what masking would propose.';
+  aiNote.textContent = isOwnerTrial
+    ? 'This is a local masking preview only. The separate owner-only NVIDIA trial has its own status below.'
+    : 'No real Nebius AI requests are possible from this browser. Inspect the current idea to see what masking would propose.';
 }
 function validateOfflineSource() {
   const valid = validateIdea(idea.value);
@@ -153,7 +156,9 @@ inspectAI.addEventListener('click', () => {
     proposedAI.value=masked.maskedText;
     if(!masked.validation.passedKnownPatterns) {aiNote.textContent='Masking is incomplete; nothing can be transmitted.'; return; }
     reviewedAI.disabled = false;
-    aiNote.textContent = 'Limited known-pattern checks passed; anonymity is NOT guaranteed. AI remains disabled. Nothing was sent.';
+    aiNote.textContent = isOwnerTrial
+      ? 'Limited known-pattern checks passed; anonymity is NOT guaranteed. This local preview sent nothing; see the separate owner-only trial below.'
+      : 'Limited known-pattern checks passed; anonymity is NOT guaranteed. AI remains disabled. Nothing was sent.';
   } catch { aiNote.textContent = 'Could not create a local masking preview. Nothing was sent.'; }
 });
 idea.addEventListener('input', () => {
