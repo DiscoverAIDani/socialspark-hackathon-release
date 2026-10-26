@@ -31,9 +31,9 @@ Organizer clarification: The participant asked whether **fictional prompts only 
 
 ## Financial safety invariants
 
-- User's maximum acceptable **out-of-pocket financial exposure is $25 for October 30–December 15, 2026**.
+- The owner has a **private maximum acceptable financial exposure** for October 30–December 15, 2026. The exact limit is not published in this public repository; it must be respected in any private approval review.
 - An app-level lifetime quota, per-token reference price, local request counter, and software emergency stop **do not guarantee a provider-side billing ceiling**.
-- **No enforceable Nebius account/provider-side $25 cap has been verified.** This is a hard blocker to suggesting assured financial safety, even if a single call is estimated to be inexpensive. Do not re-open top-up research unless a genuinely new issue requires it.
+- **No enforceable Nebius account/provider-side spending cap has been verified.** This is a hard blocker to suggesting assured financial safety, even if a single call is estimated to be inexpensive. Do not re-open top-up research unless a genuinely new issue requires it.
 - A 20-request shared quota may itself prevent valid unrestricted judge use. Do **not** silently increase or remove it, or treat its present tests as demonstrating organizer compliance.
 - No live deployment, paid test, provisioned secret, production CLI command, Worker activation, or merge is authorized by this document. There is no permission for a second live request.
 
@@ -42,14 +42,14 @@ Organizer clarification: The participant asked whether **fictional prompts only 
 | Scenario | Judge-access answer | Financial answer | Action without separate approval |
 | --- | --- | --- | --- |
 | Organizers explicitly accept restricted fixed-prompt demo and a finite allowance | Conditional only: still requires a deployed, working hosted service | Requires independently acceptable financial controls, with no guarantee inferred from quotas | Continue offline architecture/test review only |
-| Organizers require unrestricted live use | Current fixed-text + 20-lifetime design does **not** establish compliance | Uncontrolled public usage conflicts with an unverified $25 provider cap | Do **not** activate live inference |
+| Organizers require unrestricted live use | Current fixed-text + 20-lifetime design does **not** establish compliance | Uncontrolled public usage conflicts with an unverified provider spending cap | Do **not** activate live inference |
 | No organizer reply by October 26 | **Unknown**; silence is not acceptance | Provider hard cap remains unverified | Preserve accurate offline submission; do not imply eligibility |
 | Financial controls remain unverifiable on October 28–29 | Not a release gate pass even with simulated 100% CI | Owner's maximum acceptable exposure takes precedence | Submit truthful existing functionality before cutoff, without speculative live claims |
 
 ## Future release prerequisites — all currently blocked
 
 1. Document written organizer access interpretation (or explicitly record no response and assume no exception).
-2. Resolve **financial exposure** within the owner's $25 maximum by independently verifiable controls; failing that, **no launch**. No unapproved payment or paid request.
+2. Resolve **financial exposure** within the owner's privately stated maximum by independently verifiable controls; failing that, **no launch**. No unapproved payment or paid request.
 3. Design and offline-test a public **HTTPS Worker** with real Turnstile Siteverify, trusted one-use session, strict origin/CSRF, server-only secret bindings, Durable Object quota/rate and authenticated emergency stop. Passing mocked tests is not live proof.
 4. Establish model-compatible **server-side token counting** and trustworthy provider response/usage verification. Verify model and pricing under separately authorized conditions.
 5. Obtain **separate explicit owner authorization** for exact deployment and for any potentially billable inference, then conduct a separately authorized end-to-end test; don't reuse the owner-only trial authorization.
@@ -59,8 +59,8 @@ Organizer clarification: The participant asked whether **fictional prompts only 
 
 Accurate: *“SocialSpark's current public website demonstrates offline four-platform draft editing and privacy checks. In a separate, owner-authorized local test, the NVIDIA Nemotron 3 Nano integration through Nebius Token Factory successfully generated four platform-specific drafts; the owner reviewed and applied them. Public live inference is not yet enabled.”*
 
-Not accurate: *“Judges can freely generate live NVIDIA drafts on the public demo,”* *“NVIDIA is free/unlimited through December 15,”* or *“The hosted model is protected by a provider-enforced $25 cap.”*
+Not accurate: *“Judges can freely generate live NVIDIA drafts on the public demo,”* *“NVIDIA is free/unlimited through December 15,”* or *“The hosted model is protected by a provider-enforced spending cap.”*
 
-The YouTube demonstration and Devpost working URL are already recorded as complete. This review **does not repeat or alter** them. Do not change Devpost content on the user's behalf.
+**Devpost SUBMITTED October 25, 2026**, confirmed by the owner's submission acknowledgment and Submitted profile badge. The YouTube demonstration and working URL were already completed. This review **does not repeat or alter** them. Do not change Devpost content on the user's behalf.
 
 **Release state:** STOPPED. GitHub draft only, public static-only, no paid request, no deployment, no live judge access.
