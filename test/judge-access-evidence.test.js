@@ -26,7 +26,7 @@ test('owner success evidence is distinguished from unrestricted public judge acc
  assert.match(doc,/ONE authorized, potentially billable NVIDIA\/Nebius inference/);
  assert.match(doc,/four distinct, locally validated drafts/);
  assert.match(doc,/no organizer answer/i);
- assert.match(doc,/No enforceable Nebius account\/provider-side \$25 cap has been verified/);
+ assert.match(doc,/No enforceable Nebius account\/provider-side spending cap has been verified/);
  assert.match(doc,/Do not claim the owner-only local test makes the public site compliant/);
  assert.match(doc,/No live deployment, paid test, provisioned secret/);
  assert.match(doc,/October 30, 2026, 10:00 AM PDT/);
@@ -40,4 +40,37 @@ test('the readiness note requires separate authorization, not a second one-shot 
  assert.match(doc,/separate explicit owner authorization/);
  assert.match(doc,/No unapproved payment or paid request/);
  assert.match(doc,/Do not change Devpost content on the user's behalf/);
+});
+
+test('submission checklists consistently reflect the owner-confirmed October 25 submitted status',async()=>{
+ for(const path of [
+  'HACKATHON_SUBMISSION_REVIEW.md',
+  'LIVE_JUDGE_GO_NO_GO.md',
+  'JUDGE_ACCESS_EVIDENCE_AND_DECISION.md',
+  'OCT26_JUDGE_ACCESS_FOLLOWUP.md'
+ ]){
+  const doc=await read(path);
+  assert.match(doc,/SUBMITTED October 25/i,`${path} must confirm submission`);
+  assert.doesNotMatch(doc,/Current Devpost state was \*\*Draft|last shared Devpost state was \*\*4\/5/i,`${path} must not claim current draft status`);
+ }
+});
+
+test('public planning documents avoid publishing the private owner spending ceiling',async()=>{
+ for(const path of [
+  'HACKATHON_SUBMISSION_REVIEW.md',
+  'LIVE_JUDGE_GO_NO_GO.md',
+  'JUDGE_ACCESS_EVIDENCE_AND_DECISION.md',
+  'OCT26_JUDGE_ACCESS_FOLLOWUP.md'
+ ]){
+  const doc=await read(path);
+  assert.doesNotMatch(doc,/\$25\b/,`${path} should not publish a private financial limit`);
+ }
+});
+
+test('Discord clarification is marked as already posted and not due for duplicate follow-up',async()=>{
+ const doc=await read('OCT26_JUDGE_ACCESS_FOLLOWUP.md');
+ assert.match(doc,/POSTED OCTOBER 25/);
+ assert.match(doc,/Do not duplicate this message on October 26/);
+ assert.match(doc,/actual owner-posted wording/);
+ assert.match(doc,/Devpost SUBMITTED October 25/);
 });
