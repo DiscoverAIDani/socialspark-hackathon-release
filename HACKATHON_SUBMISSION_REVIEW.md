@@ -1,12 +1,10 @@
-# SocialSpark — Devpost submission readiness (working draft, not submitted)
+# SocialSpark — Devpost submission checkpoint (SUBMITTED October 25, 2026)
 
 **Submission deadline:** Friday, October 30, 2026 at 10:00 AM PDT.
 **Judging ends:** Tuesday, December 15, 2026 at noon Pacific.
 **Official rules:** https://nebiusglobalaihackathon.devpost.com/rules
 
-This working draft is NOT a submission, published demonstration video, or
-evidence that live NVIDIA access is currently available. Do not claim the
-requirements below are fulfilled merely because a local simulation passed.
+**Owner-confirmed status:** SocialSpark was submitted to the hackathon on October 25, 2026. The Devpost confirmation and the entrant's hackathon-profile screenshot show **Submitted**. This document is a working internal audit, not proof that live public inference or unrestricted judge access is available.
 
 ## Known working project
 
@@ -45,7 +43,7 @@ after any separately authorized and proven online end-to-end test.
 - **Video:** https://youtu.be/WAiW3YW-UJw
 - **Title:** SocialSpark — AI Social Media Content Studio
 - **Length:** 1 minute 25 seconds; public playback without sign-in was previously verified.
-- **Devpost:** User already added this video in Project Details. The submission draft subsequently reached **4 of 5 steps completed** (not yet submitted).
+- **Devpost:** User already added this video in Project Details. The entry advanced from 4/5 draft steps to **SUBMITTED October 25**, verified by owner-provided Devpost screenshots. Do not request a new video.
 - The original recording is already sufficient for the short demo-video format; no new video is required. Do not treat its existing offline footage as proof of currently enabled public AI inference.
 
 ## Optional alternate storyboard — NOT a required new video
@@ -69,27 +67,25 @@ actual recorded runtime evidence, keeping the video <3 minutes.
   is demonstrable by judges; a historical invocation alone is insufficient.
 - [ ] A genuinely usable, **free and unrestricted** working test demo is
   available through Dec 15; the shared 20-call cap is not presumed compliant.
-- [ ] Exact public repo URL, open source LICENSE, README setup steps, and
-  submission project link verified.
+- [x] Public repository and recognized MIT license verified, README has setup steps, and Devpost preview contains a GitHub link. The owner-confirmed submitted project is https://devpost.com/software/socialspark-3v7klo.
 - [x] Existing public YouTube demo (1:25): https://youtu.be/WAiW3YW-UJw; previously verified playable without sign-in and entered in the Devpost Project Details. Do not re-record unless the owner explicitly requests changes.
-- [ ] Technical description clearly names Nebius Token Factory and
-  NVIDIA Nemotron 3 Nano.
+- [x] The actual Devpost preview's How I Built It section names Nebius Token Factory and NVIDIA Nemotron 3 Nano and distinguishes real local inference from offline public drafts.
 - [ ] Specific, authentic feedback about the model and Nebius tooling written
   from the owner's actual experience; do not invent performance metrics.
 - [ ] If pre-existing before Aug 26, explain concrete improvements since then.
-- [ ] Entrant chooses correct track and completes every required Devpost field.
-- [ ] Save and submit **before** Oct 30 at 10:00 AM PDT; confirm Devpost shows
-  **submitted**, not merely the 4/5 draft state.
+- [x] Devpost allowed final submission after all four form sections were completed; track and required answers passed Devpost form validation. **Exact chosen track field is not independently visible in the shared screenshots**.
+- [x] **SUBMITTED October 25, 2026.** Owner-shared Devpost confirmation and hackathon profile show the **Submitted** badge; edits remain possible before October 30, 10:00 AM PDT. Do not submit a duplicate.
 
 ## Submission fields already completed
 
 - [x] Public YouTube demo entered and playable; do not re-record or request it again.
 - [x] Working demo URL entered; do not request it again.
 
-## Pending submission details
+## Submission status and unresolved compliance
 
 - [x] **Working demo URL:** user confirms it has already been entered in Devpost: https://socialspark-hackathon-release.daniellewilcott.workers.dev/. Do not request or re-enter it. The site currently shows offline examples until live inference is separately approved.
-- Current Devpost state was **Draft, 4/5 steps complete**; do not claim submitted until the final status confirms it.
+- Current Devpost state is **SUBMITTED**, not draft. Do not change to DRAFT based on historical screenshots.
+- This status is independent of the pending **live judge inference** requirement and does not authorize paid calls or deployment.
 
 ## Boundaries and next decision
 
