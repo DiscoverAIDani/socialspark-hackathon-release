@@ -1,11 +1,11 @@
 # SocialSpark — Decision-ready go/no-go packet
-**Prepared October 22, 2026. Release status: HOLD. Not a deployment approval.**
+**Updated October 25, 2026. Live release status: HOLD. The hackathon submission is complete. This is not a deployment approval.**
 
 ## Snapshot: no need to redo completed Devpost fields
 
 - The **public YouTube video** is already recorded and linked on Devpost: https://youtu.be/WAiW3YW-UJw (1:25).
 - The **working demo URL** was already entered: https://socialspark-hackathon-release.daniellewilcott.workers.dev/.
-- The last shared Devpost state was **4/5 steps complete, DRAFT**, not submitted. Do not recreate the video or re-enter the URL.
+- SocialSpark is **SUBMITTED** on Devpost as of October 25, 2026, verified by the owner's submitted confirmation and Devpost profile badge. Do not recreate the video, re-enter the URL or submit a duplicate.
 - Official submission deadline: **October 30, 2026, 10:00 a.m. PDT.**
 - Official judging runs **December 1–15**, and access must remain free and unrestricted through December 15.
 - Rules: https://nebiusglobalaihackathon.devpost.com/rules
@@ -45,7 +45,7 @@
 - [ ] **Tokens:** provider-compatible chat-template/tokenizer or explicitly accepted conservative risk for the **fixed** prompt; never label JSON byte count as billable token count.
 - [ ] **Model:** output can actually return four valid drafts within max output tokens; reasoning tokens, timeouts and inconsistent usage handled, real billing reconciled.
 - [ ] **Authorization:** owner separately authorizes (A) deployment, and (B) a limited paid inference test; approval of one does not authorize the other.
-- [ ] **Submission:** confirm public source LICENSE, README, required Devpost text/feedback/track; change draft to SUBMITTED before deadline with proof.
+- [x] **Submission:** Devpost confirmation and profile show **SUBMITTED** October 25. Public source is MIT-licensed with README instructions; project preview includes model explanation, repository, and working URL. Judge-access compliance remains an independent, unresolved gate.
 
 ## What must NEVER happen on this draft branch
 
