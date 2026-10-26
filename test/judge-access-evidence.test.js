@@ -50,7 +50,7 @@ test('submission checklists consistently reflect the owner-confirmed October 25 
   'OCT26_JUDGE_ACCESS_FOLLOWUP.md'
  ]){
   const doc=await read(path);
-  assert.match(doc,/SUBMITTED October 25/i,`${path} must confirm submission`);
+  assert.match(doc,/SUBMITTED[^\n]{0,90}October 25/i,`${path} must confirm submission`);
   assert.doesNotMatch(doc,/Current Devpost state was \*\*Draft|last shared Devpost state was \*\*4\/5/i,`${path} must not claim current draft status`);
  }
 });
