@@ -54,7 +54,8 @@ class FakeD1{
       const [now1,now2,hash,now3,ticketHash,linkedHash,promptId,tone,now4]=args;
       const invite=this.invites.get(hash);
       const t=this.tickets.get(ticketHash);
-      const valid=this.enabled===1&&this.active===0&&this.used<this.max&&
+      const singleTest=sql.includes('AND max_requests=1 AND used_requests=0');
+      const valid=(!singleTest||(this.max===1&&this.used===0))&&this.enabled===1&&this.active===0&&this.used<this.max&&
         now1>=this.start&&now2<=this.end&&invite?.enabled===1&&invite?.expiry>=now3&&
         t&&!t.consumed&&t.inviteHash===linkedHash&&linkedHash===hash&&
         t.promptId===promptId&&t.tone===tone&&t.expires>=now4;
@@ -400,4 +401,53 @@ test('only the single approved low-cost NVIDIA model can ever be selected',async
     assert.equal(response.status,503);
     assert.deepEqual(network.counts(),{siteverify:0,provider:0});
   }
+});
+
+test('approved single-test mode makes exactly one fake inference and cannot repeat it',async()=>{
+  const d=new FakeD1();
+  const testTime=Date.parse('2026-10-30T16:56:00Z');
+  d.start=Math.floor((testTime-60000)/1000);
+  d.end=Math.floor((testTime+600000)/1000);
+  d.max=1;
+  d.invites.get(HASH).expiry=d.end;
+  const e=env(d);
+  delete e.JUDGE_GATE_ENABLED;
+  delete e.JUDGE_BILLING_HARD_CAP_CONFIRMED;
+  e.JUDGE_SINGLE_TEST_APPROVAL='ONE_REQUEST_ONLY_2026_10_30';
+  const network=fakeTransport();
+  const gateway=createJudgeGateway({transport:network.transport,clock:()=>testTime});
+  const first=await approvedRequest(gateway,e);
+  assert.equal((await gateway.fetch(first,e)).status,200);
+  const second=await approvedRequest(gateway,e);
+  assert.equal((await gateway.fetch(second,e)).status,429);
+  assert.equal(d.used,1);
+  assert.deepEqual(network.counts(),{siteverify:2,provider:1});
+});
+test('one-call test flag cannot spend if the database quota was raised above one',async()=>{
+  const d=new FakeD1();
+  const now=Date.parse('2026-10-30T16:56:00Z');
+  d.start=Math.floor((now-60000)/1000);
+  d.end=Math.floor((now+600000)/1000);
+  d.max=2;
+  d.invites.get(HASH).expiry=d.end;
+  const e=env(d);
+  delete e.JUDGE_GATE_ENABLED;
+  delete e.JUDGE_BILLING_HARD_CAP_CONFIRMED;
+  e.JUDGE_SINGLE_TEST_APPROVAL='ONE_REQUEST_ONLY_2026_10_30';
+  const network=fakeTransport();
+  const gateway=createJudgeGateway({transport:network.transport,clock:()=>now});
+  const req=await approvedRequest(gateway,e);
+  assert.equal((await gateway.fetch(req,e)).status,429);
+  assert.equal(network.counts().provider,0);
+});
+test('owner single-use consent automatically expires October 30 before 10:30 Pacific',async()=>{
+  const e=env();
+  delete e.JUDGE_GATE_ENABLED;
+  delete e.JUDGE_BILLING_HARD_CAP_CONFIRMED;
+  e.JUDGE_SINGLE_TEST_APPROVAL='ONE_REQUEST_ONLY_2026_10_30';
+  const network=fakeTransport();
+  const gateway=createJudgeGateway({transport:network.transport,clock:()=>Date.parse('2026-10-30T17:30:00Z')});
+  const res=await gateway.fetch(new Request(ORIGIN+'/'),e);
+  assert.equal(res.status,503);
+  assert.deepEqual(network.counts(),{siteverify:0,provider:0});
 });
