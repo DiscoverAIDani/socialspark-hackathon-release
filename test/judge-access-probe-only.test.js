@@ -92,7 +92,7 @@ test('zero upstream requests and static production Worker isolation',async()=>{
     file('wrangler.jsonc'),
     file('cloudflare/judge-gateway-disabled-worker.mjs')
   ]);
-  assert.doesNotMatch(code,/fetch\s*\(/); // no fetch() invocation in code
+  assert.doesNotMatch(code.replace('async fetch(request,env,ctx){',''),/\bfetch\s*\(/); // HTTP entrypoint method is not an outbound network call
   assert.doesNotMatch(code,/NEBIUS_API_KEY|NVIDIA_API_KEY|api\.tokenfactory\.nebius\.com/);
   assert.doesNotMatch(code,/console\.log|console\.error/);
   assert.deepEqual(Object.keys(JSON.parse(prod)).sort(),
