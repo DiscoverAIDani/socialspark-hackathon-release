@@ -38,6 +38,15 @@
 - **New financial finding:** Nebius [Token Factory Supplemental Terms](https://docs.nebius.com/legal/token-factory), **effective October 22, 2026**, section 6.1 describes fees as **post-paid** unless an agreement provides otherwise, and section 6.2 permits free credits to be modified or revoked. The public documentation **does not establish an enforceable provider-side spending hard stop for this account**. Assume none until independently verified in the actual account/service contract. A locally simulated reservation, a rate limit, a low model token price, or automatic top-ups being disabled are not a provider-enforced financial ceiling.
 - This research materially **reinforces NO-GO** for live deployment without separate financial protection and explicit owner approvals. It neither changes actual account settings nor uses billable inference.
 
+## October 29 — currently available promo credits are not a hard spending stop
+
+- The owner reports that promotional credit remains available in the Nebius Token Factory account, with **no expiration date shown**. Treat its future validity and provider-side billing protection as **unverified**, even if its balance is sufficient for many small model requests. Do **not** publish the account-specific amount or infer an expiration date.
+- Official [Token Factory Billing documentation](https://docs.tokenfactory.nebius.com/other-capabilities/billing) says promo codes increase the account balance, while the API rejects calls once the balance is **negative**. It does not promise refusal before the next request crosses zero, and it does **not** establish a contractual per-key or per-project maximum billable exposure.
+- A new **`cloudflare/judge-release-evidence-offline.mjs`** checklist distinguishes genuine independent operating evidence from reassuring but insufficient details such as promo credits or disabled automatic top-ups. **No checklist flags, even if all marked true, can return deployment or provider-call authorization.**
+- **`test/judge-release-evidence-offline.test.js`** covers missing/false evidence, mistaking credit for a hard cap, fictional assertions of full readiness, unknown fields, private account data in public code, immutable results, and the production Wrangler static-only configuration.
+- **CI foundation 452 tests passed, zero failed**, after the new tests; this is a static/offline regression, **not** a live billing, authentication, or judge inference test.
+- **Operational judgment:** promotional credits can fund some eligible calls if valid, but deploying real inference still requires verified financial controls, genuine full-pass login and gateway, and separately requested owner consent. Continue as **NO-GO** until those are evidenced.
+
 ## Offline test / actual evidence matrix
 
 | Safety requirement | Offline status | Missing production evidence |
