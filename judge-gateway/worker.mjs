@@ -26,6 +26,7 @@ const MAX_PROVIDER_OUTPUT_BYTES = 12000;
 const JUDGE_ACTION = 'judge_generate';
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const EXPOSURE_END_EXCLUSIVE = Date.UTC(2026,11,16,8,0,0); // Dec 15, 11:59 PM Pacific.
+const SINGLE_TEST_CUTOFF = Date.UTC(2026,9,30,17,30,0); // Oct 30 at 10:30 AM Pacific; expires irrevocably.
 // Pin the only reviewed model candidate; reject any runtime substitution or retired model.
 const ALLOWED_MODEL = 'nvidia/Nemotron-3_5-Lightning';
 const DENY = Object.freeze({ok:false,error:'Unavailable or not authorized.'});
@@ -46,10 +47,17 @@ function headers(contentType='application/json; charset=utf-8'){
 function reply(status,body=DENY){
   return new Response(JSON.stringify(body),{status,headers:headers()});
 }
+function singleTestMode(env,now){
+  return env?.JUDGE_SINGLE_TEST_APPROVAL==='ONE_REQUEST_ONLY_2026_10_30' &&
+    env.JUDGE_GATE_ENABLED===undefined &&
+    env.JUDGE_BILLING_HARD_CAP_CONFIRMED===undefined &&
+    Number.isFinite(now) && now<SINGLE_TEST_CUTOFF-60000;
+}
 function ready(env,origin,now){
+  const generalAuthorized=env?.JUDGE_GATE_ENABLED==='EXPLICITLY_APPROVED' &&
+    env?.JUDGE_BILLING_HARD_CAP_CONFIRMED==='YES_PROVIDER_ENFORCED';
   return Boolean(
-    env && env.JUDGE_GATE_ENABLED==='EXPLICITLY_APPROVED' &&
-    env.JUDGE_BILLING_HARD_CAP_CONFIRMED==='YES_PROVIDER_ENFORCED' &&
+    env && (generalAuthorized||singleTestMode(env,now)) &&
     env.JUDGE_ORIGIN===origin &&
     origin.startsWith('https://') &&
     typeof env.NEBIUS_API_KEY==='string' && env.NEBIUS_API_KEY.length>=12 &&
@@ -138,12 +146,13 @@ async function verifyTurnstile(transport,token,env,hostname){
     return report?.success===true && report.hostname===hostname && report.action===JUDGE_ACTION;
   }catch{return false;}
 }
-async function reserve(db,hashedCode,ticketHash,promptId,tone,nowSec){
+async function reserve(db,hashedCode,ticketHash,promptId,tone,nowSec,oneTime=false){
   // Single atomic SQLite UPDATE. Authorization, fixed time window, lifetime
   // request cap and global one-request-at-a-time guard are checked together.
   // "Used" is incremented BEFORE any potentially billable request. Never refund
   // it, including on errors. Fail closed on unknown metadata or DB failures.
-  const result=await db.prepare(JUDGE_SQL.reserve).bind(nowSec,nowSec,hashedCode,nowSec,ticketHash,hashedCode,promptId,tone,nowSec).run();
+  const statement=oneTime?JUDGE_SQL.singleTestReserve:JUDGE_SQL.reserve;
+  const result=await db.prepare(statement).bind(nowSec,nowSec,hashedCode,nowSec,ticketHash,hashedCode,promptId,tone,nowSec).run();
   return result?.success===true && result?.meta?.changes===1;
 }
 async function release(db){
@@ -221,7 +230,7 @@ export function createJudgeGateway({transport=fetch,clock=()=>Date.now()}={}){
       const nowSec=Math.floor(reservationTime/1000);
       let reserved=false;
       try{
-        reserved=await reserve(env.DB,digest,ticketHash,selected.prompt.id,selected.tone,nowSec);
+        reserved=await reserve(env.DB,digest,ticketHash,selected.prompt.id,selected.tone,nowSec,singleTestMode(env,reservationTime));
       }catch{return reply(503);}
       if(!reserved)return reply(429);
       let ticketConsumed=false;
