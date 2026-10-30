@@ -1,11 +1,18 @@
 {
-  // LOCKED INITIAL DEPLOYMENT: NO model secrets, NO D1 binding, NO activation.
-  // This Worker intentionally returns 503 to every request until separate
-  // account-specific configuration and explicit user authorization.
+  // LOCKED: approved D1-only binding. NO provider secrets, NO inference flags.
+  // Database row starts with enabled=0 and max_requests=0; Worker checks
+  // JUDGE_GATE_ENABLED and JUDGE_BILLING_HARD_CAP_CONFIRMED (both absent).
   "name": "socialspark-private-judge-gateway",
   "main": "./worker.mjs",
   "compatibility_date": "2026-10-30",
   "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "socialspark-judges",
+      "database_id": "6b50a336-7f24-44c7-9240-77890bf7838f"
+    }
+  ],
   "observability": {
     "enabled": false
   }
