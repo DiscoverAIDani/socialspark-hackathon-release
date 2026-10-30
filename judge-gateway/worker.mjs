@@ -26,7 +26,8 @@ const MAX_PROVIDER_OUTPUT_BYTES = 12000;
 const JUDGE_ACTION = 'judge_generate';
 const SITEVERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const EXPOSURE_END_EXCLUSIVE = Date.UTC(2026,11,16,8,0,0); // Dec 15, 11:59 PM Pacific.
-const STOP_MODEL = 'nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B';
+// Pin the only reviewed model candidate; reject any runtime substitution or retired model.
+const ALLOWED_MODEL = 'nvidia/Nemotron-3_5-Lightning';
 const DENY = Object.freeze({ok:false,error:'Unavailable or not authorized.'});
 
 function headers(contentType='application/json; charset=utf-8'){
@@ -52,9 +53,7 @@ function ready(env,origin,now){
     env.JUDGE_ORIGIN===origin &&
     origin.startsWith('https://') &&
     typeof env.NEBIUS_API_KEY==='string' && env.NEBIUS_API_KEY.length>=12 &&
-    typeof env.JUDGE_MODEL_ID==='string' &&
-    /^nvidia\/[A-Za-z0-9._:/+-]{3,110}$/.test(env.JUDGE_MODEL_ID) &&
-    env.JUDGE_MODEL_ID!==STOP_MODEL &&
+    env.JUDGE_MODEL_ID===ALLOWED_MODEL &&
     typeof env.TURNSTILE_SECRET==='string' && env.TURNSTILE_SECRET.length>=10 &&
     typeof env.TURNSTILE_SITE_KEY==='string' &&
     /^[A-Za-z0-9_-]{15,100}$/.test(env.TURNSTILE_SITE_KEY) &&
@@ -244,7 +243,7 @@ export function createJudgeGateway({transport=fetch,clock=()=>Date.now()}={}){
       try{
         modelResult=await requestNebiusDrafts({
           payload:selected.payload,tone:selected.tone,
-          key:env.NEBIUS_API_KEY,model:env.JUDGE_MODEL_ID,
+          key:env.NEBIUS_API_KEY,model:ALLOWED_MODEL,
           serverAuthorization:true,providerApproval:true,
           fetchImpl:transport,timeoutMs:15000
         });
