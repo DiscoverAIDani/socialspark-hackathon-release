@@ -204,6 +204,11 @@ export function createJudgeGateway({transport=fetch,clock=()=>Date.now()}={}){
         const choice=previewChoice(data);
         if(!choice)return reply(400);
         const digest=await sha256hex(auth.slice(7));
+        // Distinguish a mistyped/stale invitation from D1 ticket quota failure
+        // without revealing whether any secret or code is correct in response body.
+        try{
+          if(!await validInvite(env.DB,digest,Math.floor(tick/1000)))return reply(403);
+        }catch{return reply(503);}
         const ticket=freshTicket();
         let stored=false;
         try{
