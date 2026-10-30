@@ -186,7 +186,12 @@ describe('local real DO with synthetic signed JWT + mock security pipeline',()=>
         {exampleId:'fictional-beginner-workshop'})
     });
     const proof=await inspectOfflineJudgeAccessJwt({request:make(JUDGE_SESSION_PATH,a),...auth});
-    expect(proof.allowed, JSON.stringify(proof)).toBe(true);
+    expect(proof.allowed, JSON.stringify({proof,publicKeyShape:{
+      kty:pub.kty,kid:pub.kid,alg:pub.alg,use:pub.use,
+      e:pub.e,modulusChars:pub.n?.length,
+      prototypeOk:Object.getPrototypeOf(pub)===Object.prototype,
+      hasPrivateParts:['d','p','q','dp','dq','qi','oth','k'].filter(x=>Object.hasOwn(pub,x))
+    }})).toBe(true);
     const issued=await offlineBoundIssueJudgeSession(make(JUDGE_SESSION_PATH,a),{
       auth,session:{
         expectedOrigin:origin,expectedHostname:'judge.example.org',nowMs:at,
