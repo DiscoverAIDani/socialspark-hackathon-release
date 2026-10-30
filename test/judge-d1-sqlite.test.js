@@ -89,3 +89,21 @@ test('example Wrangler entrypoint resolves beside its config, not nested twice',
   assert.equal(existsSync(resolve(dirname(path),json.main)),true);
   assert.equal(json.d1_databases[0].database_id,'REPLACE_WITH_APPROVED_D1_DATABASE_ID');
 });
+
+test('actual SQLite owner-test reservation requires max_requests exactly one and used zero',()=>{
+  const db=dbFixture(1);
+  try{
+    assert.equal(createTicket(db),1);
+    const args=[NOW,NOW,INVITE,NOW,TICKET,INVITE,'workshop','friendly',NOW];
+    assert.equal(db.prepare(JUDGE_SQL.singleTestReserve).run(...args).changes,1);
+    assert.equal(db.prepare(JUDGE_SQL.release).run().changes,1);
+    assert.equal(db.prepare(JUDGE_SQL.singleTestReserve).run(...args).changes,0);
+    assert.equal(db.prepare('SELECT used_requests FROM judge_gate WHERE id=1').get().used_requests,1);
+  }finally{db.close();}
+  const tooLarge=dbFixture(2);
+  try{
+    assert.equal(createTicket(tooLarge),1);
+    assert.equal(tooLarge.prepare(JUDGE_SQL.singleTestReserve)
+      .run(NOW,NOW,INVITE,NOW,TICKET,INVITE,'workshop','friendly',NOW).changes,0);
+  }finally{tooLarge.close();}
+});
