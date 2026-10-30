@@ -64,7 +64,7 @@ function acceptableJwk(k,kid){
 /** The caller provides a TRUSTED JWKS, never a URL or unverified JWT header. */
 export async function inspectOfflineJudgeAccessJwt({
   request,expectedIssuer,expectedAudience,approvedJudgeEmails,
-  trustedJwks,nowMs,cryptoImpl=globalThis.crypto
+  trustedJwks,nowMs,cryptoImpl=globalThis.crypto,identityBindingKey
 }={}){
   if(!(request instanceof Request))return deny('request-required');
   if(!validIssuer(expectedIssuer)||!validAudience(expectedAudience)||
@@ -127,9 +127,35 @@ export async function inspectOfflineJudgeAccessJwt({
   if(!email||!EMAIL_RE.test(email)||!approvedJudgeEmails.includes(email))
     return deny('judge-identity-not-approved');
 
-  // Do not return a name, email, raw token or claim data in the result.
+  // Optional offline v2 identity binding. The server-only 256-bit key is
+  // REQUIRED by v2; never derive this from email alone, nor accept it from
+  // browser input. This value must never be returned by a public HTTP route.
+  // Legacy offline callers that omit the key remain non-binding prototypes.
+  let judgeBindingDigest;
+  if(identityBindingKey!==undefined){
+    if(!(identityBindingKey instanceof Uint8Array)||
+       identityBindingKey.byteLength!==32||
+       !cryptoImpl?.subtle?.sign)
+      return deny('identity-binding-unavailable');
+    try{
+      const key=await cryptoImpl.subtle.importKey('raw',identityBindingKey,
+        {name:'HMAC',hash:'SHA-256'},false,['sign']);
+      const canonical=JSON.stringify([
+        'socialspark-judge-subject-binding-v2',
+        expectedIssuer,expectedAudience,payload.sub
+      ]);
+      const mac=await cryptoImpl.subtle.sign('HMAC',key,
+        new TextEncoder().encode(canonical));
+      judgeBindingDigest=Array.from(new Uint8Array(mac),
+        b=>b.toString(16).padStart(2,'0')).join('');
+      if(!/^[a-f0-9]{64}$/.test(judgeBindingDigest))
+        return deny('identity-binding-unavailable');
+    }catch{return deny('identity-binding-unavailable');}
+  }
+  // Never return a raw email, subject, bearer token or identity key.
   return Object.freeze({
     allowed:true,reason:'offline-judge-jwt-verified',
-    providerCallsAuthorized:false
+    providerCallsAuthorized:false,
+    ...(judgeBindingDigest?{judgeBindingDigest}:{})
   });
 }
