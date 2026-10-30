@@ -6,6 +6,11 @@
   "main": "./worker.mjs",
   "compatibility_date": "2026-10-30",
   "workers_dev": true,
+  "vars": {
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAFs5pv8w719eaiWd",
+    "JUDGE_ORIGIN": "https://socialspark-private-judge-gateway.daniellewilcott.workers.dev",
+    "JUDGE_MODEL_ID": "nvidia/Nemotron-3_5-Lightning"
+  },
   "d1_databases": [
     {
       "binding": "DB",
