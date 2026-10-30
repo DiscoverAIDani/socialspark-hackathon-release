@@ -145,8 +145,14 @@ describe('local real DO with synthetic signed JWT + mock security pipeline',()=>
       {name:'RSASSA-PKCS1-v1_5',modulusLength:2048,
         publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},
       true,['sign','verify']);
-    const pub={...await crypto.subtle.exportKey('jwk',kp.publicKey),
+    // Cloudflare's local testing runtime may export extra PRIVATE RSA fields
+    // even for this fixture's publicKey. Explicitly pick public n/e only:
+    // the production trust source must never accept private signing material.
+    const rawJwk=await crypto.subtle.exportKey('jwk',kp.publicKey);
+    const pub={kty:'RSA',n:rawJwk.n,e:rawJwk.e,
       kid:'local-kid-1',use:'sig',alg:'RS256'};
+    expect(['d','p','q','dp','dq','qi','oth','k'].every(
+      k=>!Object.hasOwn(pub,k))).toBe(true);
     const at=Date.now(),now=Math.floor(at/1000);
     const origin='https://judge.example.org';
     const issuer='https://fictionalteam.cloudflareaccess.com';
