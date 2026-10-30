@@ -198,7 +198,7 @@ describe('local real DO with synthetic signed JWT + mock security pipeline',()=>
           s.issueBoundDigestForOfflineGateway(args)
       }
     });
-    expect(issued.accepted).toBe(true);
+    expect(issued.accepted, JSON.stringify(issued)).toBe(true);
     expect(issued.providerCallsAuthorized).toBe(false);
     const forGen=who=>make(JUDGE_API_PATH,who,{
       Cookie:issued.setCookieTemplate.split(';')[0],
