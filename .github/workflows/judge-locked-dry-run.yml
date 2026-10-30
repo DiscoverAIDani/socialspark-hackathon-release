@@ -29,7 +29,7 @@ jobs:
               db[0].binding !== 'DB' ||
               db[0].database_name !== 'socialspark-judges' ||
               db[0].database_id !== '6b50a336-7f24-44c7-9240-77890bf7838f') throw Error('Unexpected D1 binding');
-          if (!content.includes('LOCKED INITIAL DEPLOYMENT')) throw Error('Missing lock marker');
+          if (!content.includes('LOCKED: approved D1-only binding')) throw Error('Missing lock marker');
           const source = readFileSync('judge-gateway/worker.mjs','utf8');
           if (!source.includes("JUDGE_GATE_ENABLED==='EXPLICITLY_APPROVED'") ||
               !source.includes("JUDGE_BILLING_HARD_CAP_CONFIRMED==='YES_PROVIDER_ENFORCED'")) throw Error('Missing explicit activation gates');
