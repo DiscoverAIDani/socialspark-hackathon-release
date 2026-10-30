@@ -30,7 +30,8 @@ async function requireOfflineJudgeIdentity(request,auth){
   if(!auth || typeof auth!=='object' || Array.isArray(auth))
     return false;
   try{
-    const decision=await inspectOfflineJudgeAccessJwt({request,...auth});
+    // Never let a supplied configuration replace the actual HTTP request.
+    const decision=await inspectOfflineJudgeAccessJwt({...auth,request});
     return decision?.allowed===true &&
       decision.providerCallsAuthorized===false;
   }catch{return false;}
