@@ -9,7 +9,8 @@ The deployment configuration resides at `judge-gateway/wrangler.jsonc`.
 IMPORTANT:
 - The deployed worker is **disabled by default**.
 - This branch has no provider API key or Turnstile secret.
-- No D1 database binding, active invitations or enabled quota are configured.
+- D1 database `socialspark-judges` is bound, but the gate remains disabled (enabled=0, max_requests=0).
+- No invitation codes, model secrets, or activation flags are configured.
 - The Worker must respond with HTTP 503 (unavailable) until all explicit separate
   inference authorizations and actual cost protections are established.
 - This does NOT change the default branch or the public SocialSpark deployment.
