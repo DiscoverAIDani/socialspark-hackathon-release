@@ -42,7 +42,7 @@ export default {
       const identity=await ctx.access.getIdentity();
       if(!identity || typeof identity.email!=='string' ||
         identity.email.length>254 ||
-        !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(identity.email))
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identity.email))
         return reply(403,'access-identity-not-verified');
       return reply(200,'access-authenticated-test-only');
     }catch{
