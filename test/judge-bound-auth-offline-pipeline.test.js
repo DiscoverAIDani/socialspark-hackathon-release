@@ -312,5 +312,5 @@ test('live deployment, provider inference, and legacy production wiring remain d
  assert.match(worker,/NEVER authorizes or invokes NVIDIA\/Nebius inference/);
  assert.doesNotMatch(worker,/judge-bound-auth-offline-pipeline/);
  assert.doesNotMatch(bridge,/fetch\s*\(/);
- assert.match(bridge,/NO route/);
+ assert.match(bridge,/No route/);
 });
