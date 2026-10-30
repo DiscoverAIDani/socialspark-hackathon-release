@@ -17,6 +17,7 @@ import {offlineBoundIssueJudgeSession,offlineBoundCheckJudgeGenerate}
  from '../cloudflare/judge-bound-auth-offline-pipeline.mjs';
 import {JUDGE_SESSION_PATH} from '../cloudflare/judge-offline-pipeline.mjs';
 import {JUDGE_API_PATH} from '../cloudflare/judge-gateway-core.mjs';
+import {inspectOfflineJudgeAccessJwt} from '../cloudflare/judge-access-jwt-offline.mjs';
 import {TURNSTILE_JUDGE_ACTION} from '../cloudflare/judge-turnstile-core.mjs';
 import {JUDGE_QUOTA_STORAGE_KEY,offlineFixtureState} from '../cloudflare/judge-quota-core.mjs';
 import {RATE_LIMIT_LEDGER_KEY,offlineRateFixture}
@@ -184,6 +185,8 @@ describe('local real DO with synthetic signed JWT + mock security pipeline',()=>
         {turnstileToken:'synthetic-local-turnstile'}:
         {exampleId:'fictional-beginner-workshop'})
     });
+    const proof=await inspectOfflineJudgeAccessJwt({request:make(JUDGE_SESSION_PATH,a),...auth});
+    expect(proof.allowed, JSON.stringify(proof)).toBe(true);
     const issued=await offlineBoundIssueJudgeSession(make(JUDGE_SESSION_PATH,a),{
       auth,session:{
         expectedOrigin:origin,expectedHostname:'judge.example.org',nowMs:at,
