@@ -97,14 +97,18 @@ export const JUDGE_CLIENT_SCRIPT = String.raw`
       });
       const data=await response.json();
       if(!response.ok||data.ok!==true||!/^[a-f0-9]{64}$/.test(data.ticket)||
-         data.promptId!==promptId||data.tone!==tone)throw Error('prepare-failed');
+         data.promptId!==promptId||data.tone!==tone){
+           const e=Error('prepare-failed');e.status=response.status;throw e;
+         }
       ticket=data.ticket;
       exact.textContent='Exact text to Nebius (fictional): '+data.exactText+
         ' | Tone: '+tone+'. Review before approving. This ticket expires in two minutes.';
       confirm.disabled=false;
-    }catch{
+    }catch(err){
       invalidate();
-      exact.textContent='The invitation could not prepare a request. No provider call made.';
+      // Report only the HTTP status class; never show the invite, ticket or secret.
+      const safeStatus=err?.status && [400,403,405,415,429,503].includes(err.status) ? ' (HTTP '+err.status+')' : '';
+      exact.textContent='The invitation could not prepare a request'+safeStatus+'. No provider call made.';
     }finally{preparing=false;preview.disabled=false;}
   });
   const platforms=[['facebook','Facebook'],['instagram','Instagram'],['linkedin','LinkedIn'],['tiktok','TikTok']];
