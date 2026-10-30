@@ -1,0 +1,16 @@
+{
+  // EXAMPLE ONLY. This is deliberately not named wrangler.jsonc, so an
+  // accidental "wrangler deploy" in the repository will not deploy this.
+  // Copy only after separate owner approval for LIVE costs and deployment.
+  "name": "socialspark-private-judge-gateway",
+  "main": "./worker.mjs",
+  "compatibility_date": "2026-10-30",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "socialspark-judges",
+      "database_id": "REPLACE_WITH_APPROVED_D1_DATABASE_ID"
+    }
+  ],
+  "observability": { "enabled": false }
+}
