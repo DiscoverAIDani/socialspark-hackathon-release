@@ -1,0 +1,12 @@
+{
+  // LOCKED INITIAL DEPLOYMENT: NO model secrets, NO D1 binding, NO activation.
+  // This Worker intentionally returns 503 to every request until separate
+  // account-specific configuration and explicit user authorization.
+  "name": "socialspark-private-judge-gateway",
+  "main": "./worker.mjs",
+  "compatibility_date": "2026-10-30",
+  "workers_dev": true,
+  "observability": {
+    "enabled": false
+  }
+}
