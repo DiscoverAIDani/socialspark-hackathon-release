@@ -47,6 +47,13 @@
 - **CI foundation 452 tests passed, zero failed**, after the new tests; this is a static/offline regression, **not** a live billing, authentication, or judge inference test.
 - **Operational judgment:** promotional credits can fund some eligible calls if valid, but deploying real inference still requires verified financial controls, genuine full-pass login and gateway, and separately requested owner consent. Continue as **NO-GO** until those are evidenced.
 
+## October 29 late evening — both endpoints require signed judge auth (offline)
+
+- Added `cloudflare/judge-authenticated-offline-pipeline.mjs`, an **unbound, nonnetworked** integration wrapper that verifies the trusted signed Cloudflare Access JWT **before simulated session issuance** and **again before simulated generation**. Missing, forged, expired, wrong-audience, or unapproved-identity credentials deny **before** mock Turnstile, CSRF session consumption, anti-abuse checks, token/pricing preflight or quota reservations.
+- Added `test/judge-authenticated-offline-pipeline.test.js`. Synthetic RSA keys and mocked Durable Object ledgers verify both successful offline checks and denials without mutating mock counters. A regression checks that supplied options **cannot substitute a valid different request** for the actual HTTP request being authenticated.
+- Foundation CI **459/459 passed, 0 failures**. The existing `wrangler.jsonc` is still static-only. **No real Access application, Worker route, third-party API, secrets, deployment, merge, provider usage or billable traffic.**
+- **Further security gap:** authenticating both requests is necessary but not sufficient for production. The prototype **does not bind the signed Access subject to the previously issued one-use session**, does not securely refresh Access JWKS keys, does not protect a newly deployed Worker by actual Access policy, and has no cost-safe provider transport. All remain explicit NO-GO release blockers.
+
 ## Offline test / actual evidence matrix
 
 | Safety requirement | Offline status | Missing production evidence |
