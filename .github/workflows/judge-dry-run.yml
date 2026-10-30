@@ -1,0 +1,35 @@
+name: Judge Gateway — offline Worker build only
+on:
+  push:
+    branches:
+      - review/judge-gateway-source-only
+    paths:
+      - 'judge-gateway/**'
+      - 'security/**'
+      - 'public/**'
+      - '.github/workflows/judge-dry-run.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-no-deploy:
+    name: Cloudflare bundle dry-run (no account, no secrets, no deploy)
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert no live config or secrets are present
+        shell: bash
+        run: |
+          test ! -e judge-gateway/wrangler.jsonc
+          test ! -e judge-gateway/.dev.vars
+          test ! -e judge-gateway/.env
+          grep -q 'REPLACE_WITH_APPROVED_D1_DATABASE_ID' judge-gateway/wrangler.example.jsonc
+          grep -q 'EXPLICITLY_APPROVED' judge-gateway/worker.mjs
+      - name: Bundle as Cloudflare Worker, dry-run only
+        run: npx --yes wrangler@4 deploy --dry-run --config judge-gateway/wrangler.example.jsonc --outdir /tmp/judge-bundle
+      - name: Verify JavaScript bundle exists
+        run: test -s /tmp/judge-bundle/worker.js || test -s /tmp/judge-bundle/worker.mjs
