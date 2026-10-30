@@ -384,3 +384,20 @@ test('revoked invite gets denied before contacting Turnstile',async()=>{
   assert.equal(e.DB.used,0);
   assert.deepEqual(network.counts(),{siteverify:0,provider:0});
 });
+
+test('only the single approved low-cost NVIDIA model can ever be selected',async()=>{
+  for(const attemptedModel of [
+    'nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B',
+    'nvidia/Nemotron-3-Ultra-550b-a55b',
+    'nvidia/Nemotron-3_5-Lightning-fast',
+    'nvidia/UNKNOWN'
+  ]){
+    const e=env();
+    e.JUDGE_MODEL_ID=attemptedModel;
+    const network=fakeTransport();
+    const handler=createJudgeGateway({transport:network.transport,clock:()=>GOOD_TIME});
+    const response=await handler.fetch(judgeRequest(),e);
+    assert.equal(response.status,503);
+    assert.deepEqual(network.counts(),{siteverify:0,provider:0});
+  }
+});
