@@ -20,6 +20,10 @@
       {
         "name": "TEST_STOP",
         "class_name": "SocialSparkJudgeEmergencyStop"
+      },
+      {
+        "name": "TEST_BOUND_SESSIONS",
+        "class_name": "SocialSparkJudgeBoundSessionsV2"
       }
     ]
   },
@@ -36,6 +40,12 @@
       "tag": "local-tests-v2",
       "new_sqlite_classes": [
         "SocialSparkJudgeEmergencyStop"
+      ]
+    },
+    {
+      "tag": "local-tests-v3",
+      "new_sqlite_classes": [
+        "SocialSparkJudgeBoundSessionsV2"
       ]
     }
   ]

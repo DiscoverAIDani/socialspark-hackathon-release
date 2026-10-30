@@ -111,7 +111,7 @@ test('test-only Durable Objects have no production binding or public provision r
   assert.equal(Object.hasOwn(rootWrangler,'durable_objects'),false);
   assert.deepEqual(
     local.durable_objects.bindings.map(x=>x.name).sort(),
-    ['TEST_QUOTA','TEST_SESSIONS','TEST_RATE','TEST_STOP'].sort()
+    ['TEST_QUOTA','TEST_SESSIONS','TEST_RATE','TEST_STOP','TEST_BOUND_SESSIONS'].sort()
   );
   const source=await file('runtime-security/fixture-worker.mjs');
   assert.doesNotMatch(source,/api\/provision|api\/initialize|api\/activate/);

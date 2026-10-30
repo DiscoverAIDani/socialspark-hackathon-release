@@ -12,6 +12,7 @@ on:
       - safety/judge-session-http-inert-offline
       - safety/judge-turnstile-outbound-contract
       - safety/judge-complete-offline-rehearsal
+      - safety/judge-release-static-lock-18v
 
 permissions:
   contents: read
