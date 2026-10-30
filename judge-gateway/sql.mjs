@@ -22,6 +22,16 @@ export const JUDGE_SQL = Object.freeze({
     'SELECT 1 FROM judge_invites WHERE token_sha256=? AND enabled=1 AND expires_at_utc>=?) '+
     'AND EXISTS (SELECT 1 FROM judge_tickets WHERE ticket_sha256=? '+
     'AND invite_sha256=? AND prompt_id=? AND tone=? AND consumed=0 AND expires_at_utc>=?)',
+  singleTestReserve:
+    // Reserved for the owner's explicitly approved one-call live test only.
+    // The WHERE clause makes an accidentally raised quota inert for this mode.
+    'UPDATE judge_gate SET used_requests=used_requests+1, request_active=1 '+
+    'WHERE id=1 AND enabled=1 AND request_active=0 '+
+    'AND max_requests=1 AND used_requests=0 '+
+    'AND window_starts_utc<=? AND window_ends_utc>=? '+
+    'AND EXISTS (SELECT 1 FROM judge_invites WHERE token_sha256=? AND enabled=1 AND expires_at_utc>=?) '+
+    'AND EXISTS (SELECT 1 FROM judge_tickets WHERE ticket_sha256=? '+
+    'AND invite_sha256=? AND prompt_id=? AND tone=? AND consumed=0 AND expires_at_utc>=?)',
   release:
     'UPDATE judge_gate SET request_active=0 WHERE id=1 AND request_active=1'
 });
