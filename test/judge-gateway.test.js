@@ -205,7 +205,7 @@ test('revoked invite, exhausted quota and expired access deny after challenge',a
       const body=await prepare.json();
       const r=await gateway.fetch(judgeRequest({...JUDGE_PAYLOAD,ticket:body.ticket}),e);
       assert.equal(r.status,429);
-    }else assert.equal(prepare.status,429);
+    }else assert.equal(prepare.status,403);
     assert.equal(network.counts().provider,0);
   }
 });
