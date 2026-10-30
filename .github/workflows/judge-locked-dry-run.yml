@@ -23,7 +23,13 @@ jobs:
           const cfg = JSON.parse(content.replace(/^\s*\/\/.*$/gm,''));
           if (cfg.name !== 'socialspark-private-judge-gateway') throw Error('Wrong Worker target');
           if (cfg.main !== './worker.mjs') throw Error('Wrong worker entrypoint');
-          if (cfg.vars || cfg.services || cfg.unsafe || cfg.routes || cfg.triggers || cfg.secrets) throw Error('Unexpected inference bindings/activation');
+          if (cfg.services || cfg.unsafe || cfg.routes || cfg.triggers || cfg.secrets) throw Error('Unexpected inference binding/activation');
+          const allowedVars = cfg.vars ?? {};
+          if (Object.keys(allowedVars).sort().join(',') !== 'JUDGE_MODEL_ID,JUDGE_ORIGIN,TURNSTILE_SITE_KEY' ||
+              allowedVars.TURNSTILE_SITE_KEY !== '0x4AAAAAAFs5pv8w719eaiWd' ||
+              allowedVars.JUDGE_ORIGIN !== 'https://socialspark-private-judge-gateway.daniellewilcott.workers.dev' ||
+              allowedVars.JUDGE_MODEL_ID !== 'nvidia/Nemotron-3_5-Lightning') throw Error('Unexpected public non-secret variables');
+          if (allowedVars.JUDGE_GATE_ENABLED || allowedVars.JUDGE_BILLING_HARD_CAP_CONFIRMED || allowedVars.NEBIUS_API_KEY || allowedVars.TURNSTILE_SECRET) throw Error('Inference or private secret leaked into config');
           const db = cfg.d1_databases;
           if (!Array.isArray(db) || db.length !== 1 ||
               db[0].binding !== 'DB' ||
@@ -33,7 +39,7 @@ jobs:
           const source = readFileSync('judge-gateway/worker.mjs','utf8');
           if (!source.includes("JUDGE_GATE_ENABLED==='EXPLICITLY_APPROVED'") ||
               !source.includes("JUDGE_BILLING_HARD_CAP_CONFIRMED==='YES_PROVIDER_ENFORCED'")) throw Error('Missing explicit activation gates');
-          console.log('Verified: only approved D1 binding; no inference variables, secrets, or activation flags');
+          console.log('Verified: approved D1 and public widget vars only; no private secrets or activation flags');
           NODE
       - name: Compile Worker only, never deploy
         run: npx --yes wrangler@4 deploy --dry-run --config judge-gateway/wrangler.jsonc --outdir /tmp/judge-locked-bundle
