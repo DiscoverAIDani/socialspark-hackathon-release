@@ -213,6 +213,29 @@ test('authentication success does not bypass CSRF, token/pricing, or quota gates
  assert.equal(s2.store.read(JUDGE_QUOTA_STORAGE_KEY).attempts,0);
 });
 
+test('configuration cannot substitute a different signed request for the actual request',async()=>{
+ const s=fixture();
+ const forged=signedJwt(CLAIMS,HEADER,other.privateKey);
+ const realRequest=request(JUDGE_SESSION_PATH,forged);
+ const auth=authFor({request:request(JUDGE_SESSION_PATH,signedJwt())});
+ const result=await issue(realRequest,{auth,session:s.session});
+ denied(result);
+ assert.equal(result.code,'judge-access-denied');
+ assert.deepEqual(s.calls,[]);
+ const issued=await issue(request(JUDGE_SESSION_PATH),{
+   auth:authFor(),session:s.session
+ });
+ assert.equal(issued.accepted,true);
+ const fakeGen=generateRequest(issued,forged);
+ const goodGen=generateRequest(issued,signedJwt());
+ const outcome=await generate(fakeGen,{
+   auth:authFor({request:goodGen}),generate:s.generate
+ });
+ denied(outcome);
+ assert.equal(s.store.read(JUDGE_SESSION_LEDGER_KEY).consumedLifetime,0);
+ assert.equal(s.store.read(JUDGE_QUOTA_STORAGE_KEY).attempts,0);
+});
+
 test('missing Access config or simulated services fails closed without side effects',async()=>{
  const s=fixture();
  denied(await issue(request(JUDGE_SESSION_PATH),{session:s.session}));
